@@ -218,6 +218,7 @@ RUN set -x \
     && pecl install mongodb \
     #&& pecl install imagick \
     #&& pecl install amqp \
+    && pecl install xmlrpc-1.0.0RC3 \
     && docker-php-ext-enable \
         apcu \
         vips \
