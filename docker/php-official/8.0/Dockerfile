@@ -190,8 +190,8 @@ RUN set -x \
         pdo_pgsql \
         pgsql \
         soap \
-        sockets \        
-        tokenizer \        
+        sockets \  
+        tokenizer \
         sysvmsg \
         sysvsem \
         sysvshm \
@@ -203,6 +203,7 @@ RUN set -x \
         opcache \
     && pecl install memcached \
     && pecl install apcu \
+    && pecl install xmlrpc-1.0.0RC3 \
     && pecl install vips \
     && pecl install redis \
     && pecl install mongodb \

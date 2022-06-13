@@ -185,8 +185,8 @@ RUN set -x \
         pdo_pgsql \
         pgsql \
         soap \
-        sockets \        
-        tokenizer \        
+        sockets \  
+        tokenizer \
         sysvmsg \
         sysvsem \
         sysvshm \
