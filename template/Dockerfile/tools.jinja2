@@ -1,18 +1,20 @@
 {% macro goreplace(path="/usr/local/bin", version="1.1.2") -%}
     ## Install go-replace
-    && wget -O "{{ path }}/go-replace" "https://github.com/webdevops/goreplace/releases/download/{{ version }}/gr-64-linux" \
+    && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
+    && grArch="echo $dpkgArch | sed s/amd64/64/g"
+    && wget -O "{{ path }}/go-replace" "https://github.com/webdevops/goreplace/releases/download/{{ version }}/gr-$grArch-linux" \
     && chmod +x "{{ path }}/go-replace" \
     && "{{ path }}/go-replace" --version
 {%- endmacro %}
 
-{% macro gosu(path="/sbin", arch="amd64", version="1.10") -%}
+{% macro gosu(path="/sbin", version="1.10") -%}
     # Install gosu
-    && wget -O "{{ path }}/gosu" "https://github.com/tianon/gosu/releases/download/{{ version }}/gosu-{{ arch }}" \
-    && wget -O "/tmp/gosu.asc" "https://github.com/tianon/gosu/releases/download/{{ version }}/gosu-{{ arch }}.asc" \
+    && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
+    && wget -O "{{ path }}/gosu" "https://github.com/tianon/gosu/releases/download/{{ version }}/gosu-$dpkgArch" \
+    && wget -O "{{ path }}/gosu.asc" "https://github.com/tianon/gosu/releases/download/{{ version }}/gosu-$dpkgArch.asc" \
     && export GNUPGHOME="$(mktemp -d)" \
     && gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
-    && gpg --batch --verify /tmp/gosu.asc "{{ path }}/gosu" \
-    && rm -rf "$GNUPGHOME" /tmp/gosu.asc \
-    && chmod +x "{{ path }}/gosu" \
-    && "{{ path }}/gosu" nobody true
+    && gpg --batch --verify {{ path }}/gosu.asc "{{ path }}/gosu" \
+    && rm -rf "$GNUPGHOME" \
+    && chmod +x "{{ path }}/gosu"
 {%- endmacro %}
