@@ -5,6 +5,7 @@
 /tests/serverspec/.bundle/
 /tests/serverspec/Dockerfile*
 /BLACKLIST
+/venv
 *.log
 *.pyc
 *.DS_Store
