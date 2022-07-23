@@ -1,0 +1,15 @@
+[tool.pyright]
+include = ["bin"]
+exclude = ["**/__pycache__"]
+defineConstant = { DEBUG = true }
+venv = "venv"
+
+reportMissingImports = true
+reportMissingTypeStubs = false
+
+pythonVersion = "3.9"
+pythonPlatform = "Linux"
+
+executionEnvironments = [
+    { root = "bin" }
+]
