@@ -7,4 +7,5 @@
 /BLACKLIST
 *.log
 *.pyc
+*.DS_Store
 .doit.db
