@@ -5,13 +5,14 @@ templatePath: 'template'
 provisionPath: 'provisioning'
 imagePath: 'documentation/docs/resources/images/'
 baselayoutPath: 'baselayout'
+githubActionsPath: '.github/workflows'
 testinfraPath: 'tests/testinfra'
 serverspecPath: 'tests/serverspec'
 testDockerfilePath: 'tests/dockerfile'
 blacklistFile: 'BLACKLIST'
 
 docker:
-  imagePrefix: 'webdevops'
+  imagePrefix: 'ghcr.io/cocoastorm/webdevops'
   autoLatestTag: 'ubuntu-18.04'
   pathRegex: '/(?P<image>[^/]+)/(?P<tag>[^/]+)/Dockerfile$'
   autoPull: True

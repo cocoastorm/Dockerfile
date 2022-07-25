@@ -1,6 +1,6 @@
 ARGS = $(filter-out $@,$(MAKECMDGOALS))
 MAKEFLAGS += --silent
-.PHONY: test documentation provision
+.PHONY: test documentation provision github
 
 DOCKER_REPOSITORY=`cat DOCKER_REPOSITORY`
 DOCKER_TAG_LATEST=`cat DOCKER_TAG_LATEST`
@@ -45,6 +45,9 @@ test:
 provision:
 	bin/console generate:dockerfile
 	bin/console generate:provision
+
+github:
+	bin/console generate:ghactions --whitelist=php-*/**/*
 
 push:
 	bin/console docker:push --threads=auto
