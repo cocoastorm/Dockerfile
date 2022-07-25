@@ -16,6 +16,7 @@ COPY conf/ /opt/docker/
 RUN set -x \
     # Install services
     && yum-install \
+        dpkg \
         # Install tools
         zip \
         unzip \

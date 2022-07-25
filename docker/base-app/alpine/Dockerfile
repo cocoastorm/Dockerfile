@@ -14,7 +14,9 @@ ENV APPLICATION_USER=application \
 COPY conf/ /opt/docker/
 
 RUN set -x \
-    && apk-install shadow \
+    && apk-install \
+        dpkg \
+        shadow \
     && apk-install \
         # Install common tools
         zip \
