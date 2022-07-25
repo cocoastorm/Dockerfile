@@ -20,6 +20,7 @@
 
 import os
 import re
+from pathlib import Path
 
 DOCKERFILE_STATEMENT_FROM_RE = re.compile(r'FROM\s+(?P<image>[^\s:]+)(:(?P<tag>[^\s:]+))?(?!.*\s+AS)', re.MULTILINE)
 DOCKERFILE_STATEMENT_FROM_MULTISTAGE_RE = re.compile(r'FROM\s+(?P<image>[^\s:]+)(:(?P<tag>[^\s:]+))?(\s+AS)', re.MULTILINE)
@@ -60,6 +61,12 @@ def find_file_in_path(dockerfile_path, filename="Dockerfile", whitelist=False, b
                 if term in file:
                     tmp.append(file)
                     break
+
+                # somewhat support glob style matching
+                local_filepath = Path(os.path.relpath(file, dockerfile_path))
+                if local_filepath.match(term):
+                    tmp.append(file)
+
         file_list = tmp
 
     if blacklist:
