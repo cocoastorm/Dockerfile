@@ -26,7 +26,7 @@ import queue
 import shutil
 import grp
 from cleo import Output
-from webdevops import Provisioner
+from webdevops.Provisioner import Provisioner
 from webdevops.command import BaseCommand
 
 class GenerateProvisionCommand(BaseCommand):
