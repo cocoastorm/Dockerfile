@@ -47,7 +47,7 @@ provision:
 	bin/console generate:provision
 
 github:
-	bin/console generate:ghactions --whitelist=php-*/**/*
+	bin/console generate:ghactions --whitelist=php-*/8.*/*
 
 push:
 	bin/console docker:push --threads=auto
