@@ -1,7 +1,7 @@
 {% macro goreplace(path="/usr/local/bin", version="1.1.2") -%}
     ## Install go-replace
-    && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
-    && grArch="echo $dpkgArch | sed s/amd64/64/g"
+    && export dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
+    && export grArch="$(echo $dpkgArch | sed s/amd64/64/g)" \
     && wget -O "{{ path }}/go-replace" "https://github.com/webdevops/goreplace/releases/download/{{ version }}/gr-$grArch-linux" \
     && chmod +x "{{ path }}/go-replace" \
     && "{{ path }}/go-replace" --version
@@ -9,7 +9,7 @@
 
 {% macro gosu(path="/sbin", version="1.10") -%}
     # Install gosu
-    && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
+    && export dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
     && wget -O "{{ path }}/gosu" "https://github.com/tianon/gosu/releases/download/{{ version }}/gosu-$dpkgArch" \
     && wget -O "{{ path }}/gosu.asc" "https://github.com/tianon/gosu/releases/download/{{ version }}/gosu-$dpkgArch.asc" \
     && export GNUPGHOME="$(mktemp -d)" \
