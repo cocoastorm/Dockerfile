@@ -20,9 +20,10 @@ class GenerateGHActionsCommand(BaseCommand):
     """
 
     image_prefix = ''
+    dockerfile_path = ''
 
     def run_task(self, configuration):
-        self.image_prefix = configuration.get('docker.imagePrefix')
+        image_prefix = configuration.get('docker.imagePrefix')
         template_path = os.path.join(configuration.get('templatePath'), 'Github')
         dockerfile_path = configuration.get('dockerPath')
         github_actions_path = configuration.get('githubActionsPath')
@@ -31,8 +32,11 @@ class GenerateGHActionsCommand(BaseCommand):
         whitelist = self.get_whitelist()
         blacklist = self.get_blacklist()
 
+        self.image_prefix = image_prefix
+        self.dockerfile_path = dockerfile_path
+
         if Output.VERBOSITY_VERBOSE <= self.output.get_verbosity():
-            self.line('<info>-> </info><comment>image prefix</comment> : %s' % self.image_prefix)
+            self.line('<info>-> </info><comment>image prefix</comment> : %s' % image_prefix)
             self.line('<info>-> </info><comment>docker path</comment> : %s' % dockerfile_path)
             self.line('<info>-> </info><comment>template path </comment> : %s' % template_path)
 
@@ -76,13 +80,12 @@ class GenerateGHActionsCommand(BaseCommand):
         :type input_file: str
         """
 
-        output_file = os.path.splitext(input_file)
-        output_file = os.path.join(os.path.dirname(output_file[0]), os.path.basename(output_file[0]))
+        output_file = os.path.split(input_file)[0]
 
-        docker_image = os.path.basename(os.path.dirname(os.path.dirname(output_file)))
-        docker_tag = os.path.basename(os.path.dirname(output_file))
+        docker_image = os.path.basename(os.path.dirname(output_file))
+        docker_tag = os.path.basename(output_file)
 
-        context_dir = os.path.split(output_file)[0]
+        context_dir = os.path.relpath(output_file, os.path.dirname(self.dockerfile_path))
 
         img = {
             'name': f"{docker_image}:{docker_tag}",
@@ -92,5 +95,6 @@ class GenerateGHActionsCommand(BaseCommand):
 
         if Output.VERBOSITY_NORMAL <= self.output.get_verbosity():
             self.line("<info>* </info><comment>Build block for </comment>%s" % img["name"])
+            self.line("<info>  context_path: </info>%s" % context_dir)
 
         return img
