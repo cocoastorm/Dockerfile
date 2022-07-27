@@ -5,7 +5,7 @@
 
 
 # Staged baselayout builder
-FROM webdevops/toolbox AS baselayout
+FROM ghcr.io/cocoastorm/webdevops/toolbox:latest AS baselayout
 RUN mkdir -p \
         /baselayout/sbin \
         /baselayout/usr/local/bin \

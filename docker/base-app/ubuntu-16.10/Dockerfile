@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM webdevops/base:ubuntu-16.10
+FROM ghcr.io/cocoastorm/webdevops/base:ubuntu-16.10
 
 ENV APPLICATION_USER=application \
     APPLICATION_GROUP=application \

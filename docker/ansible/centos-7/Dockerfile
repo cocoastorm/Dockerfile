@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM webdevops/bootstrap:centos-7
+FROM ghcr.io/cocoastorm/webdevops/bootstrap:centos-7
 
 RUN set -x \
     # Install ansible

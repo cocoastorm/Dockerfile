@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM webdevops/bootstrap:ubuntu-15.04
+FROM ghcr.io/cocoastorm/webdevops/bootstrap:ubuntu-15.04
 
 RUN set -x \
     # Install ansible

@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM webdevops/nginx:ubuntu-16.04
+FROM ghcr.io/cocoastorm/webdevops/nginx:ubuntu-16.04
 
 ENV WEB_NO_CACHE_PATTERN="\.(css|js|gif|png|jpg|svg|json|xml)$"
 

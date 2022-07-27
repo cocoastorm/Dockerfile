@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM webdevops/bootstrap:debian-9
+FROM ghcr.io/cocoastorm/webdevops/bootstrap:debian-9
 
 RUN set -x \
     # Install ansible

@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM webdevops/base:alpine
+FROM ghcr.io/cocoastorm/webdevops/base:alpine
 
 ENV VARNISH_PORT    80
 

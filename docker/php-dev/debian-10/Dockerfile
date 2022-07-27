@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM webdevops/php:debian-10
+FROM ghcr.io/cocoastorm/webdevops/php:debian-10
 
 COPY conf/ /opt/docker/
 

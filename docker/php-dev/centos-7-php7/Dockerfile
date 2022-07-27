@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM webdevops/php:centos-7-php7
+FROM ghcr.io/cocoastorm/webdevops/php:centos-7-php7
 
 COPY conf/ /opt/docker/
 

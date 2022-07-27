@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM webdevops/bootstrap:centos-7
+FROM ghcr.io/cocoastorm/webdevops/bootstrap:centos-7
 
 ENV DOCKER_CONF_HOME=/opt/docker/ \
     LOG_STDOUT="" \

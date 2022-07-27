@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM webdevops/bootstrap:alpine
+FROM ghcr.io/cocoastorm/webdevops/bootstrap:alpine
 
 RUN set -x \
     && apk-install \

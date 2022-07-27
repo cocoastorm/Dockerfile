@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM webdevops/base:debian-7
+FROM ghcr.io/cocoastorm/webdevops/base:debian-7
 
 ENV APPLICATION_USER=application \
     APPLICATION_GROUP=application \

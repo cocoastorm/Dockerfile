@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM webdevops/bootstrap:debian-7
+FROM ghcr.io/cocoastorm/webdevops/bootstrap:debian-7
 
 ENV DOCKER_CONF_HOME=/opt/docker/ \
     LOG_STDOUT="" \

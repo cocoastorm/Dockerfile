@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM webdevops/bootstrap:ubuntu-17.10
+FROM ghcr.io/cocoastorm/webdevops/bootstrap:ubuntu-17.10
 
 ENV DOCKER_CONF_HOME=/opt/docker/ \
     LOG_STDOUT="" \

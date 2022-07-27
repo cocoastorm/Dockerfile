@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM webdevops/base:latest
+FROM ghcr.io/cocoastorm/webdevops/base:latest
 
 # Install services
 RUN /usr/local/bin/apt-install \
