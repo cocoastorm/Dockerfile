@@ -1,4 +1,4 @@
-{{ docker.from("base","latest") }}
+{{ docker.from("base", "latest", user) }}
 
 # Install services
 RUN /usr/local/bin/apt-install \

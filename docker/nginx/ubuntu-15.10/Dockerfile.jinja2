@@ -1,4 +1,4 @@
-{{ docker.from("base", "ubuntu-15.10") }}
+{{ docker.from("base", "ubuntu-15.10", user) }}
 
 {{ environment.web() }}
 {{ environment.nginx() }}

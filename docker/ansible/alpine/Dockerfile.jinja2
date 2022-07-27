@@ -1,4 +1,4 @@
-{{ docker.from("bootstrap", "alpine") }}
+{{ docker.from("bootstrap", "alpine", user) }}
 
 RUN set -x \
     {{ ansible.alpine() }} \

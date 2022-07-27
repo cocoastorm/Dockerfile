@@ -1,4 +1,4 @@
-{{ docker.from("base", "debian-8") }}
+{{ docker.from("base", "debian-8", user) }}
 
 {{ environment.baseApp() }}
 

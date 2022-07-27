@@ -1,4 +1,4 @@
-{{ docker.from("apache", "ubuntu-14.04") }}
+{{ docker.from("apache", "ubuntu-14.04", user) }}
 
 {{ environment.webDevelopment() }}
 

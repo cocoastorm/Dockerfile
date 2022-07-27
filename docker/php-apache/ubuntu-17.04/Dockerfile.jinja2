@@ -1,4 +1,4 @@
-{{ docker.from("php", "ubuntu-17.04") }}
+{{ docker.from("php", "ubuntu-17.04", user) }}
 
 {{ environment.web() }}
 {{ environment.webPhp() }}

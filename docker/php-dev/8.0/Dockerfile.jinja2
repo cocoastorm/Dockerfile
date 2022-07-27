@@ -1,4 +1,4 @@
-{{ docker.from("php", "8.0") }}
+{{ docker.from("php", "8.0", user) }}
 
 {{ docker.copy('conf/', '/opt/docker/') }}
 

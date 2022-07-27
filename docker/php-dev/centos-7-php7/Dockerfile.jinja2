@@ -1,4 +1,4 @@
-{{ docker.from("php", "centos-7-php7") }}
+{{ docker.from("php", "centos-7-php7", user) }}
 
 {{ docker.copy('conf/', '/opt/docker/') }}
 
