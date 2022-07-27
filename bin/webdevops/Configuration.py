@@ -43,6 +43,7 @@ default = {
 
     'docker': {
         'imagePrefix': '',
+        'imageUser': '',
         'autoLatestTag': False,
         'fromRegExp': re.compile(r'FROM\s+(?P<image>[^\s:]+)(:(?P<tag>.+))?', re.MULTILINE),
         'pathRegex': False,

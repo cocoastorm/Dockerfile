@@ -12,7 +12,8 @@ testDockerfilePath: 'tests/dockerfile'
 blacklistFile: 'BLACKLIST'
 
 docker:
-  imagePrefix: 'ghcr.io/cocoastorm/webdevops'
+  imagePrefix: 'webdevops'
+  imageUser: 'ghcr.io/cocoastorm/webdevops'
   autoLatestTag: 'ubuntu-18.04'
   pathRegex: '/(?P<image>[^/]+)/(?P<tag>[^/]+)/Dockerfile$'
   autoPull: True
