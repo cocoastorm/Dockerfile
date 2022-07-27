@@ -1,8 +1,9 @@
+{% import 'Dockerfile/docker.jinja2' as docker %}
 {% import 'Dockerfile/tools.jinja2' as tools %}
 
 {% macro dockerStage() %}
 # Staged baselayout builder
-FROM webdevops/toolbox AS baselayout
+{{ docker.from("toolbox", "latest", user) }} AS baselayout
 RUN mkdir -p \
         /baselayout/sbin \
         /baselayout/usr/local/bin \
