@@ -128,12 +128,12 @@ class BaseCommand(Command):
 
         self.teardown(exitcode)
 
-        print('')
+        self.line('')
         if self.output.is_verbose():
             if exitcode == 0:
-                print('> finished execution in %s successfully' % (duration))
+                self.line("<info>> </info><comment>finished execution in %s successfully</comment>" % duration)
             else:
-                print('> finished execution in %s with errors (exitcode %s)' % (duration, exitcode))
+                self.line("<info>> </info><comment>finished execution in %s with errors (exitcode %s)" % (duration, exitcode))
 
     def build_configuration(self):
         """
