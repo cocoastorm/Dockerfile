@@ -1,19 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import json
 import os
-import pprint
-from pathlib import Path
+import sys
 from cleo import Output
-from jinja2 import Environment, FileSystemLoader
 from webdevops import DockerfileUtility
 from webdevops.command import BaseCommand
 
-class GenerateGHActionsCommand(BaseCommand):
+class GenerateGHActionMatrixCommand(BaseCommand):
     """
     Generate Github Actions template
 
-    generate:ghactions
+    generate:gh-action-matrix
         {docker images?*         : Docker images (whitelist)}
         {--whitelist=?*          : image/tag whitelist }
         {--blacklist=?*          : image/tag blacklist }
@@ -23,7 +22,7 @@ class GenerateGHActionsCommand(BaseCommand):
     dockerfile_path = ''
 
     def run_task(self, configuration):
-        image_prefix = configuration.get('docker.imagePrefix')
+        image_prefix = configuration.get('docker.imageUser') or configuration.get('docker.imagePrefix')
         template_path = os.path.join(configuration.get('templatePath'), 'Github')
         dockerfile_path = configuration.get('dockerPath')
         github_actions_path = configuration.get('githubActionsPath')
@@ -50,12 +49,6 @@ class GenerateGHActionsCommand(BaseCommand):
                 for crit in blacklist:
                     self.line("\t * %s" % crit)
 
-        env = Environment(
-            autoescape=False,
-            loader=FileSystemLoader([template_path]),
-            trim_blocks=False
-        )
-
         dockerfiles = DockerfileUtility.find_file_in_path(
             dockerfile_path=dockerfile_path,
             filename="Dockerfile.jinja2",
@@ -65,34 +58,48 @@ class GenerateGHActionsCommand(BaseCommand):
         dockerfile_blocks = [self.process_dockerfile(file) for file in dockerfiles]
 
         base_img_blocks = []
-        multistage_img_blocks = []
+        needs_dep_img_blocks = []
 
         for block in dockerfile_blocks:
             block_input = block['input']
             dockerfile_input = os.path.splitext(block_input)[0]
 
-            multistage_imgs = DockerfileUtility.parse_dockerfile_multistage_images(dockerfile_input)
+            from_img = DockerfileUtility.parse_dockerfile_from_statement(dockerfile_input)
 
-            if len(multistage_imgs) > 0:
-                multistage_img_blocks.append(block)
+            if image_prefix in from_img:
+                block['needs_parent'] = True
+                needs_dep_img_blocks.append(block)
             else:
                 base_img_blocks.append(block)
 
-        print("base images:")
-        print(base_img_blocks)
+        # base images
+        base_images = []
+        for base_img in base_img_blocks:
+            base_img['needs_parent'] = False
 
-        print("multistage images:")
-        print(multistage_img_blocks)
+            base_images.append(base_img)
 
-        template = env.get_template('docker_action.jinja2')
-        rendered_content = template.render(dockerfiles=dockerfile_blocks)
+            # toolbox should be first :tm:
+            if "toolbox" in base_img["name"]:
+                base_images.insert(0, base_images.pop(base_images.index(base_img)))
 
-        Path(github_actions_path).mkdir(parents=True, exist_ok=True)
+        # images with parent image from "webdevops"
+        # /shrug
 
-        with open(github_action_file, 'w') as file_output:
-            file_output.write(rendered_content)
+        output_path = os.path.split(dockerfile_path)[0]
+        output_base_file = os.path.join(output_path, 'gh_matrix-base-images.json')
+        output_multi_file = os.path.join(output_path, 'gh_matrix-multi-images.json')
 
-        self.line('written to %s' % github_action_file)
+        self.line("\n\n")
+        print("::set-output name=matrix-base::%s" % json.dumps(base_images, indent=2))
+        self.line("\n\n")
+        print("::set-output name=matrix-multi::%s" % json.dumps(needs_dep_img_blocks, indent=2))
+
+        with open(output_base_file, 'w') as f:
+            json.dump(base_images, f, indent=2)
+
+        with open(output_multi_file, 'w') as fm:
+            json.dump(needs_dep_img_blocks, fm, indent=2)
 
     def process_dockerfile(self, input_file):
         """

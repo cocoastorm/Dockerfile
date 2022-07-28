@@ -4,11 +4,40 @@ on:
   push:
     branches:
       - 'main'
-      - 'experimental/gh-actions'
+
+concurrency:
+  group: "${{ github.ref }}"
+
+permissions:
+  contents: read
 
 jobs:
-  docker:
+  generate-matrix:
     runs-on: ubuntu-latest
+    outputs:
+      matrix-base: ${{ steps.generate-matrix.outputs.matrix-base }}
+      matrix-multi: ${{ steps.generate-matrix.outputs.matrix-multi }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          cache: 'pip'
+
+      - run: pip install -r bin/requirements.txt
+
+      - name: Generate Matrix
+        id: generate-matrix
+        run: python bin/console generate:gh-action-matrix --whitelist='toolbox' --whitelist='php-*/8.*/*'
+
+  build-base-images:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include: ${{ fromJson(needs.generate-matrix.outputs.matrix-base) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -25,100 +54,46 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: build and push "php-apache:8.0-alpine"
+
+      - name: Pull "toolbox"
+        run: docker pull ghcr.io/cocoastorm/webdevops/toolbox:latest
+        continue-on-error: true
+
+      - name: Build "${{ matrix.name }}"
         uses: docker/build-push-action@v3
         with:
-          context: docker/php-apache/8.0-alpine
+          context: ${{ matrix.context }}
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: "ghcr.io/cocoastorm/webdevops/php-apache:8.0-alpine"
+          tags: ${{ matrix.tags }}
+
+  build-multi-images:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include: ${{ fromJson(needs.generate-matrix.outputs.matrix-multi) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
       
-      - name: build and push "php-apache:8.0"
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to ghcr.io
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build "${{ matrix.name }}"
         uses: docker/build-push-action@v3
         with:
-          context: docker/php-apache/8.0
+          context: ${{ matrix.context }}
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: "ghcr.io/cocoastorm/webdevops/php-apache:8.0"
-      
-      - name: build and push "php-apache-dev:8.0-alpine"
-        uses: docker/build-push-action@v3
-        with:
-          context: docker/php-apache-dev/8.0-alpine
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: "ghcr.io/cocoastorm/webdevops/php-apache-dev:8.0-alpine"
-      
-      - name: build and push "php-apache-dev:8.0"
-        uses: docker/build-push-action@v3
-        with:
-          context: docker/php-apache-dev/8.0
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: "ghcr.io/cocoastorm/webdevops/php-apache-dev:8.0"
-      
-      - name: build and push "php-official:8.0-alpine"
-        uses: docker/build-push-action@v3
-        with:
-          context: docker/php-official/8.0-alpine
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: "ghcr.io/cocoastorm/webdevops/php-official:8.0-alpine"
-      
-      - name: build and push "php-official:8.0"
-        uses: docker/build-push-action@v3
-        with:
-          context: docker/php-official/8.0
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: "ghcr.io/cocoastorm/webdevops/php-official:8.0"
-      
-      - name: build and push "php-nginx-dev:8.0-alpine"
-        uses: docker/build-push-action@v3
-        with:
-          context: docker/php-nginx-dev/8.0-alpine
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: "ghcr.io/cocoastorm/webdevops/php-nginx-dev:8.0-alpine"
-      
-      - name: build and push "php-nginx-dev:8.0"
-        uses: docker/build-push-action@v3
-        with:
-          context: docker/php-nginx-dev/8.0
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: "ghcr.io/cocoastorm/webdevops/php-nginx-dev:8.0"
-      
-      - name: build and push "php-nginx:8.0-alpine"
-        uses: docker/build-push-action@v3
-        with:
-          context: docker/php-nginx/8.0-alpine
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: "ghcr.io/cocoastorm/webdevops/php-nginx:8.0-alpine"
-      
-      - name: build and push "php-nginx:8.0"
-        uses: docker/build-push-action@v3
-        with:
-          context: docker/php-nginx/8.0
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: "ghcr.io/cocoastorm/webdevops/php-nginx:8.0"
-      
-      - name: build and push "php-dev:8.0-alpine"
-        uses: docker/build-push-action@v3
-        with:
-          context: docker/php-dev/8.0-alpine
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: "ghcr.io/cocoastorm/webdevops/php-dev:8.0-alpine"
-      
-      - name: build and push "php-dev:8.0"
-        uses: docker/build-push-action@v3
-        with:
-          context: docker/php-dev/8.0
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: "ghcr.io/cocoastorm/webdevops/php-dev:8.0"
-      
+          tags: ${{ matrix.tags }}

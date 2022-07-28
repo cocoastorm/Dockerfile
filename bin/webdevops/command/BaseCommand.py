@@ -129,10 +129,11 @@ class BaseCommand(Command):
         self.teardown(exitcode)
 
         print('')
-        if exitcode == 0:
-            print('> finished execution in %s successfully' % (duration))
-        else:
-            print('> finished execution in %s with errors (exitcode %s)' % (duration, exitcode))
+        if self.output.is_verbose():
+            if exitcode == 0:
+                print('> finished execution in %s successfully' % (duration))
+            else:
+                print('> finished execution in %s with errors (exitcode %s)' % (duration, exitcode))
 
     def build_configuration(self):
         """
