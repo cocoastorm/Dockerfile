@@ -90,16 +90,29 @@ class GenerateGHActionMatrixCommand(BaseCommand):
         output_base_file = os.path.join(output_path, 'gh_matrix-base-images.json')
         output_multi_file = os.path.join(output_path, 'gh_matrix-multi-images.json')
 
+        # matrix: base images
         self.line("\n\n")
-        print("::set-output name=matrix-base::%s" % json.dumps(base_images, indent=2))
+        base_matrix = self.fmt_github_output("matrix-base", json.dumps(base_images))
+        print(base_matrix)
+
         self.line("\n\n")
-        print("::set-output name=matrix-multi::%s" % json.dumps(needs_dep_img_blocks, indent=2))
+        multi_matrix = self.fmt_github_output("matrix-multi", json.dumps(needs_dep_img_blocks))
+        print(multi_matrix)
 
         with open(output_base_file, 'w') as f:
             json.dump(base_images, f, indent=2)
 
         with open(output_multi_file, 'w') as fm:
             json.dump(needs_dep_img_blocks, fm, indent=2)
+
+    def fmt_github_output(self, name, output):
+        text = output
+        
+        text = text.replace("%", "%25")
+        text = text.replace("\n", "%0A")
+        text = text.replace("\r", "%0D")
+        
+        return "::set-output name=%s::%s" % (name, text)
 
     def process_dockerfile(self, input_file):
         """

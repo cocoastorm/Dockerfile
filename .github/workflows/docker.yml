@@ -16,8 +16,8 @@ jobs:
   generate-matrix:
     runs-on: ubuntu-latest
     outputs:
-      base: ${{ steps.output-base-matrix.outputs.base }}
-      multi: ${{ steps.output-multi-matrix.outputs.multi }}
+      base: ${{ steps.generate-matrix.outputs.matrix-base }}
+      multi: ${{ steps.generate-matrix.outputs.matrix-multi }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -30,19 +30,8 @@ jobs:
       - run: pip install -r bin/requirements.txt
 
       - name: Generate Matrix
+        id: generate-matrix
         run: python bin/console generate:gh-action-matrix --whitelist='toolbox' --whitelist='php-*/8.*/*'
-
-      - name: Output Base Matrix
-        id: output-base-matrix
-        run: |
-          JSON=$(cat ./gh_matrix-base-images.json)
-          echo "::set-output name=base::$JSON"
-      
-      - name: Output Multi Matrix
-        id: output-multi-matrix
-        run: |
-          JSON=$(cat ./gh_matrix-multi-images.json)
-          echo "::set-output name=multi::$JSON"
   
   build-base-images:
     needs: generate-matrix
