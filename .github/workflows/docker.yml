@@ -9,9 +9,6 @@ on:
 concurrency:
   group: "${{ github.ref }}"
 
-permissions:
-  contents: read
-
 jobs:
   build-toolbox-image:
     runs-on: ubuntu-latest
