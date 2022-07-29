@@ -46,10 +46,10 @@ runs:
       run: docker pull ghcr.io/cocoastorm/webdevops/toolbox:latest
       continue-on-error: true
 
-    - name: Build {{ inputs.image-name }}
+    - name: Build ${{ inputs.image-name }}
       uses: docker/build-push-action@v3
       with:
-        context: {{ inputs.image-context }}
-        platforms: {{ inputs.image-platforms }}
+        context: ${{ inputs.image-context }}
+        platforms: ${{ inputs.image-platforms }}
         push: true
         tags: ${{ inputs.image-tags }}
