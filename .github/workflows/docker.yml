@@ -46,6 +46,8 @@ jobs:
       - name: Docker Build Composite
         uses: ./.github/actions/composite-docker
         with:
+          registry-user: ${{ github.repository_owner }}
+          registry-secret: ${{ secrets.GITHUB_TOKEN }}
           image-name: ${{ matrix.name }}
           image-context: ${{ matrix.context }}
           image-tags: ${{ matrix.tags }}
@@ -65,6 +67,8 @@ jobs:
       - name: Docker Build Composite
         uses: ./.github/actions/composite-docker
         with:
+          registry-user: ${{ github.repository_owner }}
+          registry-secret: ${{ secrets.GITHUB_TOKEN }}
           image-name: ${{ matrix.name }}
           image-context: ${{ matrix.content }}
           image-tags: ${{ matrix.tags }}

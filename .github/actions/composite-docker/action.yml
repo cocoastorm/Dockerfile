@@ -1,6 +1,14 @@
 name: 'Docker Composite Build'
 description: 'qemu + buildx + ghcr.io login + docker-build-push'
 inputs:
+  registry-user:
+    description: ghcr.io user
+    required: true
+
+  registry-secret:
+    description: ghcr.io token
+    required: true
+
   image-name:
     description: 'docker image name'
     required: true
@@ -30,18 +38,18 @@ runs:
       uses: docker/login-action@v2
       with:
         registry: ghcr.io
-        username: ${{ github.repository_owner }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        username: ${{ inputs.registry-user }}
+        password: ${{ inputs.registry-secret }}
 
     - name: Pull "toolbox"
       shell: bash
       run: docker pull ghcr.io/cocoastorm/webdevops/toolbox:latest
       continue-on-error: true
 
-    - name: Build {{ $inputs.image-name }}
+    - name: Build {{ inputs.image-name }}
       uses: docker/build-push-action@v3
       with:
-        context: {{ $inputs.image-context }}
-        platforms: {{ $inputs.image-platforms }}
+        context: {{ inputs.image-context }}
+        platforms: {{ inputs.image-platforms }}
         push: true
         tags: ${{ inputs.image-tags }}
