@@ -3,8 +3,7 @@
     && export dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
     && export grArch="$(echo $dpkgArch | sed s/amd64/64/g)" \
     && wget -O "{{ path }}/go-replace" "https://github.com/webdevops/goreplace/releases/download/{{ version }}/gr-$grArch-linux" \
-    && chmod +x "{{ path }}/go-replace" \
-    && "{{ path }}/go-replace" --version
+    && chmod +x "{{ path }}/go-replace"
 {%- endmacro %}
 
 {% macro gosu(path="/sbin", version="1.10") -%}
