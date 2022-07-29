@@ -13,6 +13,21 @@ permissions:
   contents: read
 
 jobs:
+  build-toolbox-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: "Docker Build Composite: toolbox"
+        uses: ./.github/actions/composite-docker
+        with:
+          registry-user: ${{ github.repository_owner }}
+          registry-secret: ${{ secrets.GITHUB_TOKEN }}
+          image-name: "webdevops/toolbox"
+          image-context: "docker/toolbox/latest"
+          image-tags: "ghcr.io/cocoastorm/webdevops/toolbox:latest"
+
   generate-matrix:
     runs-on: ubuntu-latest
     outputs:
@@ -31,10 +46,12 @@ jobs:
 
       - name: Generate Matrix
         id: generate-matrix
-        run: python bin/console generate:gh-action-matrix --whitelist='toolbox' --whitelist='php-*/8.*/*'
+        run: python bin/console generate:gh-action-matrix --whitelist='php-*/8.*/*'
   
   build-base-images:
-    needs: generate-matrix
+    needs:
+      - build-toolbox-image
+      - generate-matrix
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -54,6 +71,7 @@ jobs:
 
   build-multi-images:
     needs:
+      - build-toolbox-image
       - generate-matrix
       - build-base-images
     runs-on: ubuntu-latest
