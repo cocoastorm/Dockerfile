@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM ghcr.io/cocoastorm/webdevops/php:8.0
+FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/php:8.0
 
 ENV WEB_DOCUMENT_ROOT=/app \
     WEB_DOCUMENT_INDEX=index.php \

@@ -5,7 +5,7 @@
 
 
 # Staged baselayout builder
-FROM ghcr.io/cocoastorm/webdevops/toolbox:latest AS baselayout
+FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/toolbox:latest AS baselayout
 RUN mkdir -p \
         /baselayout/sbin \
         /baselayout/usr/local/bin \
@@ -28,7 +28,7 @@ RUN mkdir -p \
     && chmod +x "/baselayout/sbin/gosu"
 
 
-FROM alpine:3.11
+FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/alpine:3.11
 
 LABEL maintainer=info@webdevops.io \
       vendor=WebDevOps.io \

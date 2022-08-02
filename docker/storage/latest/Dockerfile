@@ -3,5 +3,5 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM alpine:latest
+FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/alpine:latest
 

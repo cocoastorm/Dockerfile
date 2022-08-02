@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM webdevops/php-apache:ubuntu-16.10
+FROM --platform=$BUILDPLATFORM webdevops/php-apache:ubuntu-16.10
 
 ENV WEB_DOCUMENT_ROOT=/app \
     WEB_DOCUMENT_INDEX=index.php \

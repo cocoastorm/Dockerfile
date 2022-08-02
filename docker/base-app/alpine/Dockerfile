@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM ghcr.io/cocoastorm/webdevops/base:alpine
+FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/base:alpine
 
 ENV APPLICATION_USER=application \
     APPLICATION_GROUP=application \

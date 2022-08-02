@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM ghcr.io/cocoastorm/webdevops/php:ubuntu-18.04
+FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/php:ubuntu-18.04
 
 COPY conf/ /opt/docker/
 

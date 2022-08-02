@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM ghcr.io/cocoastorm/webdevops/base:centos-7
+FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/base:centos-7
 
 ENV APPLICATION_USER=application \
     APPLICATION_GROUP=application \

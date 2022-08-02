@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM webdevops/php-nginx:7.1
+FROM --platform=$BUILDPLATFORM webdevops/php-nginx:7.1
 
 ENV WEB_DOCUMENT_ROOT  /app/piwik/
 ENV PIWIK_URL          http://example.com/

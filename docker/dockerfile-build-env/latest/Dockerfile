@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM webdevops/base-app:ubuntu-18.04
+FROM --platform=$BUILDPLATFORM webdevops/base-app:ubuntu-18.04
 
 RUN apt-install \
         build-essential \

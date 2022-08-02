@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM webdevops/base-app:latest
+FROM --platform=$BUILDPLATFORM webdevops/base-app:latest
 
 RUN set -x \
     && docker-service enable ssh \

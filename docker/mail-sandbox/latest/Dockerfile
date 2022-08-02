@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM webdevops/php-nginx:latest
+FROM --platform=$BUILDPLATFORM webdevops/php-nginx:latest
 
 ENV MAILBOX_USERNAME="dev" \
     MAILBOX_PASSWORD="dev"

@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM ghcr.io/cocoastorm/webdevops/base:latest
+FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/base:latest
 
 ENV FTP_USER=application \
     FTP_PASSWORD=application \

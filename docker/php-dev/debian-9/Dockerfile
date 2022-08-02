@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM ghcr.io/cocoastorm/webdevops/php:debian-9
+FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/php:debian-9
 
 COPY conf/ /opt/docker/
 

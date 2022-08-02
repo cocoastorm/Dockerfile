@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM ghcr.io/cocoastorm/webdevops/php:7.1-alpine
+FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/php:7.1-alpine
 
 COPY conf/ /opt/docker/
 

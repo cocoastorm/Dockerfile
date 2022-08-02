@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM webdevops/base-app:latest
+FROM --platform=$BUILDPLATFORM webdevops/base-app:latest
 
 COPY conf/ /opt/docker/
 
