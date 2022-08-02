@@ -116,7 +116,7 @@ def find_dockerfiles_in_path(base_path, path_regex, image_prefix, whitelist=Fals
 
     ret = []
     for path in find_dockerfile_in_path_recursive(base_path):
-        base_path = os.path.dirname(path)
+        # base_path = os.path.dirname(path)
         if os.path.isfile(path) and os.path.basename(path) == 'Dockerfile':
             dockerfile = {
                 'path': path,
