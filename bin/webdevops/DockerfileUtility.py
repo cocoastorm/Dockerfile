@@ -22,8 +22,8 @@ import os
 import re
 from pathlib import Path
 
-DOCKERFILE_STATEMENT_FROM_RE = re.compile(r'FROM\s+(?P<image>[^\s:]+)(:(?P<tag>[^\s:]+))?(?!.*\s+AS)', re.MULTILINE)
-DOCKERFILE_STATEMENT_FROM_MULTISTAGE_RE = re.compile(r'FROM\s+(?P<image>[^\s:]+)(:(?P<tag>[^\s:]+))?(\s+AS)', re.MULTILINE)
+DOCKERFILE_STATEMENT_FROM_RE = re.compile(r'FROM\s+(?P<platform>--platform=\S+\s)?(?P<image>[^\s:]+)(:(?P<tag>[^\s:]+))?(?!.*\s+AS)', re.MULTILINE)
+DOCKERFILE_STATEMENT_FROM_MULTISTAGE_RE = re.compile(r'FROM\s+(?P<platform>--platform=\S+\s)?(?P<image>[^\s:]+)(:(?P<tag>[^\s:]+))?(\s+AS)', re.MULTILINE)
 
 def find_file_in_path(dockerfile_path, filename="Dockerfile", whitelist=False, blacklist=False):
     """

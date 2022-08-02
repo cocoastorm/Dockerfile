@@ -18,19 +18,20 @@ class GenerateGHActionMatrixCommand(BaseCommand):
         {--blacklist=?*          : image/tag blacklist }
     """
 
+    image_user = ''
     image_prefix = ''
     dockerfile_path = ''
 
     def run_task(self, configuration):
-        image_prefix = configuration.get('docker.imageUser') or configuration.get('docker.imagePrefix')
+        image_user = configuration.get('docker.imageUser')
+        image_prefix = configuration.get('docker.imagePrefix')
         template_path = os.path.join(configuration.get('templatePath'), 'Github')
         dockerfile_path = configuration.get('dockerPath')
-        github_actions_path = configuration.get('githubActionsPath')
-        github_action_file = os.path.join(github_actions_path, 'docker.yml')
 
         whitelist = self.get_whitelist()
         blacklist = self.get_blacklist()
 
+        self.image_user = image_user
         self.image_prefix = image_prefix
         self.dockerfile_path = dockerfile_path
 
@@ -114,6 +115,12 @@ class GenerateGHActionMatrixCommand(BaseCommand):
         
         return "::set-output name=%s::%s" % (name, text)
 
+    def fmt_tags(self, image, tag):
+        if self.image_user:
+            return f"{self.image_user}/{self.image_prefix}/{image}:{tag}"
+        else:
+            return f"{self.image_prefix}/{image}:{tag}"
+
     def process_dockerfile(self, input_file):
         """
         :param input_file: Input File
@@ -131,7 +138,7 @@ class GenerateGHActionMatrixCommand(BaseCommand):
             'input': input_file,
             'name': f"{docker_image}:{docker_tag}",
             'context': context_dir,
-            'tags': f"{self.image_prefix}/{docker_image}:{docker_tag}"
+            'tags': self.fmt_tags(docker_image, docker_tag)
         }
 
         if Output.VERBOSITY_NORMAL <= self.output.get_verbosity():
