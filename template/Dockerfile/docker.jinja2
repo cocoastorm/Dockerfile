@@ -8,7 +8,7 @@ FROM {{ user }}/{{ image }}:{{ tag }}
 
 {% macro fromOfficial(image, tag="latest", platform=True) -%}
 {% if platform -%}
-FROM --platform=$BUILDPLATFORM {{ user }}/{{ image }}:{{ tag }}
+FROM --platform=$BUILDPLATFORM {{ image }}:{{ tag }}
 {%- else -%}
 FROM {{ image }}:{{ tag }}
 {%- endif %}
