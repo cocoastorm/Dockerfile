@@ -51,7 +51,7 @@ jobs:
       - generate-matrix
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 1
+      max-parallel: 2
       matrix:
         include: ${{ fromJson(needs.generate-matrix.outputs.base) }}
     steps:
@@ -74,7 +74,7 @@ jobs:
       - build-base-images
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 1
+      max-parallel: 2
       matrix:
         include: ${{ fromJson(needs.generate-matrix.outputs.multi) }}
     steps:
