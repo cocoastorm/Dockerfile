@@ -50,9 +50,16 @@ class GenerateGHActionMatrixCommand(BaseCommand):
                 for crit in blacklist:
                     self.line("\t * %s" % crit)
 
-        dockerfiles = DockerfileUtility.find_file_in_path(
-            dockerfile_path=dockerfile_path,
-            filename="Dockerfile.jinja2",
+        # dockerfiles = DockerfileUtility.find_file_in_path(
+        #     dockerfile_path=dockerfile_path,
+        #     filename="Dockerfile.jinja2",
+        #     whitelist=whitelist, blacklist=blacklist,
+        # )
+
+        dockerfiles = DockerfileUtility.find_dockerfiles_in_path(
+            base_path=self.configuration.get('dockerPath'),
+            path_regex=self.configuration.get('docker.pathRegex'),
+            image_prefix=self.configuration.get('docker.imagePrefix'),
             whitelist=whitelist, blacklist=blacklist,
         )
 
@@ -75,8 +82,6 @@ class GenerateGHActionMatrixCommand(BaseCommand):
         # base images
         base_images = []
         for base_img in base_img_blocks:
-            base_img['needs_parent'] = False
-
             base_images.append(base_img)
 
             # toolbox should be first :tm:
@@ -120,12 +125,8 @@ class GenerateGHActionMatrixCommand(BaseCommand):
         else:
             return f"{self.image_prefix}/{image}:{tag}"
 
-    def process_dockerfile(self, input_file):
-        """
-        :param input_file: Input File
-        :type input_file: str
-        """
-
+    def process_dockerfile(self, dockerfile):
+        input_file = dockerfile['abspath']
         output_file = os.path.split(input_file)[0]
 
         docker_image = os.path.basename(os.path.dirname(output_file))
@@ -137,7 +138,7 @@ class GenerateGHActionMatrixCommand(BaseCommand):
             'input': input_file,
             'name': f"{docker_image}:{docker_tag}",
             'context': context_dir,
-            'tags': self.fmt_tags(docker_image, docker_tag)
+            'tags': dockerfile['image']['fullname'],
         }
 
         if Output.VERBOSITY_NORMAL <= self.output.get_verbosity():
