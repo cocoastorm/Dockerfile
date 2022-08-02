@@ -28,7 +28,7 @@ RUN mkdir -p \
     && chmod +x "/baselayout/sbin/gosu"
 
 
-FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/solr:6.6.2
+FROM --platform=$BUILDPLATFORM solr:6.6.2
 
 LABEL maintainer=info@webdevops.io \
       vendor=WebDevOps.io \

@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/alpine:latest
+FROM --platform=$BUILDPLATFORM alpine:latest
 
 RUN apk add --no-cache \
         ca-certificates \

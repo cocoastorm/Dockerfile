@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/openjdk:8
+FROM --platform=$BUILDPLATFORM openjdk:8
 
 LABEL maintainer=info@webdevops.io \
       vendor=WebDevOps.io \

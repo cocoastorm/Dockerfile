@@ -28,7 +28,7 @@ RUN mkdir -p \
     && chmod +x "/baselayout/sbin/gosu"
 
 
-FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/debian:stretch
+FROM --platform=$BUILDPLATFORM debian:stretch
 
 LABEL maintainer=info@webdevops.io \
       vendor=WebDevOps.io \

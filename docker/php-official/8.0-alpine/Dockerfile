@@ -28,7 +28,7 @@ RUN mkdir -p \
     && chmod +x "/baselayout/sbin/gosu"
 
 
-FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/php:8.0-fpm-alpine
+FROM --platform=$BUILDPLATFORM php:8.0-fpm-alpine
 
 LABEL maintainer=info@webdevops.io \
       vendor=WebDevOps.io \

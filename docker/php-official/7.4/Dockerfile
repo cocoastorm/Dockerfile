@@ -28,7 +28,7 @@ RUN mkdir -p \
     && chmod +x "/baselayout/sbin/gosu"
 
 
-FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/php:7.4-fpm-buster
+FROM --platform=$BUILDPLATFORM php:7.4-fpm-buster
 
 LABEL maintainer=info@webdevops.io \
       vendor=WebDevOps.io \

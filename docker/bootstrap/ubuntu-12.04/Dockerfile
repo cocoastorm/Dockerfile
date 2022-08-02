@@ -28,7 +28,7 @@ RUN mkdir -p \
     && chmod +x "/baselayout/sbin/gosu"
 
 
-FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/ubuntu:12.04
+FROM --platform=$BUILDPLATFORM ubuntu:12.04
 
 LABEL maintainer=info@webdevops.io \
       vendor=WebDevOps.io \

@@ -28,7 +28,7 @@ RUN mkdir -p \
     && chmod +x "/baselayout/sbin/gosu"
 
 
-FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/php:5.6-fpm-stretch
+FROM --platform=$BUILDPLATFORM php:5.6-fpm-stretch
 
 LABEL maintainer=info@webdevops.io \
       vendor=WebDevOps.io \
