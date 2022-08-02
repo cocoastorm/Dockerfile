@@ -43,7 +43,7 @@ jobs:
 
       - name: Generate Matrix
         id: generate-matrix
-        run: python bin/console generate:gh-action-matrix --whitelist='php-*/8.*/*'
+        run: python bin/console generate:gh-action-matrix --whitelist='php*/8.*/*' --blacklist='php-official/*/**'
   
   build-base-images:
     needs:
