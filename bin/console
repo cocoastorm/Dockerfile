@@ -26,7 +26,6 @@ from command.test_serverspec_command import TestServerspecCommand
 from command.generate_dockerfile_command import GenerateDockerfileCommand
 from command.generate_graph_command import GenerateGraphCommand
 from command.generate_provision_command import GenerateProvisionCommand
-from command.generate_ghactions_command import GenerateGHActionsCommand
 from command.generate_gh_action_matrix_command import GenerateGHActionMatrixCommand
 
 if __name__ == '__main__':
@@ -102,7 +101,6 @@ if __name__ == '__main__':
     application.add(GenerateDockerfileCommand(configuration=configuration))
     application.add(GenerateGraphCommand(configuration=configuration))
     application.add(GenerateProvisionCommand(configuration=configuration))
-    application.add(GenerateGHActionsCommand(configuration=configuration))
     application.add(GenerateGHActionMatrixCommand(configuration=configuration))
 
     application.run()
