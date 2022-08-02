@@ -69,8 +69,8 @@ jobs:
 
   build-multi-images:
     needs:
-      - build-toolbox-image
       - generate-matrix
+      - build-toolbox-image
       - build-base-images
     runs-on: ubuntu-latest
     strategy:
@@ -87,6 +87,6 @@ jobs:
           registry-user: ${{ github.repository_owner }}
           registry-secret: ${{ secrets.GITHUB_TOKEN }}
           image-name: ${{ matrix.name }}
-          image-context: ${{ matrix.content }}
+          image-context: ${{ matrix.context }}
           image-tags: ${{ matrix.tags }}
 

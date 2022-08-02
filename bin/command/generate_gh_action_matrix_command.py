@@ -68,7 +68,6 @@ class GenerateGHActionMatrixCommand(BaseCommand):
             from_img = DockerfileUtility.parse_dockerfile_from_statement(dockerfile_input)
 
             if image_prefix in from_img:
-                block['needs_parent'] = True
                 needs_dep_img_blocks.append(block)
             else:
                 base_img_blocks.append(block)
