@@ -139,20 +139,39 @@ def filter_dockerfile(dockerfile_list, whitelist=False, blacklist=False):
     """
     Filter Dockerfiles by white- and blacklist
     """
+    dockerfiles = []
+
+    # support glob-like style matching
+    def dockerfile_path_matches_term(dockerfile, term):
+        dockerfile_relpath = Path(os.path.relpath(dockerfile['path'], dockerfile['basePath']))
+        return dockerfile_relpath.match(term)
+
+    # support glob-like matching with a list of terms
+    def dockerfile_path_match_list(dockerfile, term_list):
+        for term in term_list:
+            if dockerfile_path_matches_term(dockerfile, term):
+                return True
+        return False
+
     if whitelist:
-        tmp = []
         for dockerfile in dockerfile_list:
+            dockerfile_name = dockerfile['image']['fullname']
+
             for term in whitelist:
-                if term in dockerfile['image']['fullname']:
-                    tmp.append(dockerfile)
+                if term in dockerfile_name:
+                    dockerfiles.append(dockerfile)
                     break
-        dockerfile_list = tmp
+
+                if dockerfile_path_matches_term(dockerfile, term):
+                    dockerfiles.append(dockerfile)
+    else:
+        dockerfiles = dockerfile_list
 
     if blacklist:
-        for term in blacklist:
-            dockerfile_list = [x for x in dockerfile_list if term not in x['image']['fullname']]
+        dockerfiles = [f for f in dockerfiles if f['image']['fullname'] not in blacklist]
+        dockerfiles = [f for f in dockerfiles if not dockerfile_path_match_list(f, blacklist)]
 
-    return dockerfile_list
+    return dockerfiles
 
 
 def find_dockerfile_in_path_recursive(basePath):
