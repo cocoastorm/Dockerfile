@@ -56,10 +56,12 @@ class GenerateGHActionMatrixCommand(BaseCommand):
         #     whitelist=whitelist, blacklist=blacklist,
         # )
 
+        user_image_prefix = f"{image_user}/{image_prefix}" if image_user else image_prefix
+
         dockerfiles = DockerfileUtility.find_dockerfiles_in_path(
             base_path=self.configuration.get('dockerPath'),
             path_regex=self.configuration.get('docker.pathRegex'),
-            image_prefix=self.configuration.get('docker.imagePrefix'),
+            image_prefix=user_image_prefix,
             whitelist=whitelist, blacklist=blacklist,
         )
 

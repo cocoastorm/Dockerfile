@@ -65,7 +65,11 @@ class GenerateDockerfileCommand(BaseCommand):
             trim_blocks=False
         )
 
-        self.template.globals = {"user": self.configuration.get('docker.imageUser') or 'webdevops'}
+        image_user = self.configuration.get('docker.imageUser')
+        image_prefix = self.configuration.get('docker.imagePrefix')
+
+        user_image_prefix = f"{image_user}/{image_prefix}" if image_user else image_prefix
+        self.template.globals = {"user": user_image_prefix or 'webdevops'}
 
         for file in DockerfileUtility.find_file_in_path(dockerfile_path=dockerfile_path, filename="Dockerfile.jinja2", whitelist=whitelist, blacklist=blacklist):
                 self.process_dockerfile(file)

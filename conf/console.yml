@@ -13,7 +13,7 @@ blacklistFile: 'BLACKLIST'
 
 docker:
   imagePrefix: 'webdevops'
-  imageUser: 'ghcr.io/cocoastorm/webdevops'
+  imageUser: 'ghcr.io/cocoastorm'
   autoLatestTag: 'ubuntu-18.04'
   pathRegex: '/(?P<image>[^/]+)/(?P<tag>[^/]+)/Dockerfile$'
   autoPull: True
