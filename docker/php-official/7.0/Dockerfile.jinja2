@@ -2,6 +2,8 @@
 
 {{ docker.fromOfficial("php", "7.0-fpm-stretch") }}
 
+{{ docker.platformArgs() }}
+
 {{ docker.version() }}
 
 {{ environment.general() }}

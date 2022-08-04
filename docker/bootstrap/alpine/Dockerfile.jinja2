@@ -2,6 +2,8 @@
 
 {{ docker.fromOfficial("alpine", "3.11") }}
 
+{{ docker.platformArgs() }}
+
 {{ docker.version() }}
 
 {{ environment.general() }}

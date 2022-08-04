@@ -1,5 +1,7 @@
 {{ docker.from("php", "debian-8-php7", user) }}
 
+{{ docker.platformArgs() }}
+
 {{ environment.web() }}
 {{ environment.webPhp() }}
 

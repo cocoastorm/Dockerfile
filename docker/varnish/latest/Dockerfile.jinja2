@@ -1,5 +1,7 @@
 {{ docker.from("base", "alpine", user) }}
 
+{{ docker.platformArgs() }}
+
 {{ varnish.env() }}
 
 {{ docker.copy('conf/', '/opt/docker/') }}

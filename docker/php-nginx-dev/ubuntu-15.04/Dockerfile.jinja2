@@ -1,5 +1,7 @@
 {{ docker.from("php-nginx", "ubuntu-15.04") }}
 
+{{ docker.platformArgs() }}
+
 {{ environment.web() }}
 {{ environment.webPhp() }}
 {{ environment.webDevelopment() }}

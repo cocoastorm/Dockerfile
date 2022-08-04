@@ -1,5 +1,7 @@
 {{ docker.from("php-apache", "7.0") }}
 
+{{ docker.platformArgs() }}
+
 {{ environment.web() }}
 {{ environment.webPhp() }}
 {{ environment.webDevelopment() }}

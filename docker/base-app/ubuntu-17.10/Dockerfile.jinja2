@@ -1,5 +1,7 @@
 {{ docker.from("base", "ubuntu-17.10", user) }}
 
+{{ docker.platformArgs() }}
+
 {{ environment.baseApp() }}
 
 {{ docker.copy('conf/', '/opt/docker/') }}

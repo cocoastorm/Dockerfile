@@ -1,5 +1,7 @@
 {{ docker.from("base", "debian-9", user) }}
 
+{{ docker.platformArgs() }}
+
 {{ environment.baseApp() }}
 
 {{ docker.copy('conf/', '/opt/docker/') }}

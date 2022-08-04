@@ -1,5 +1,7 @@
 {{ docker.from("base", "ubuntu-16.04", user) }}
 
+{{ docker.platformArgs() }}
+
 {{ environment.web() }}
 {{ environment.nginx() }}
 

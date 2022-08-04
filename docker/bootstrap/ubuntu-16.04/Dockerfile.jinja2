@@ -2,6 +2,8 @@
 
 {{ docker.fromOfficial("ubuntu", "16.04") }}
 
+{{ docker.platformArgs() }}
+
 {{ docker.version() }}
 
 {{ environment.general() }}

@@ -1,5 +1,7 @@
 {{ docker.from("base-app", "ubuntu-12.04") }}
 
+{{ docker.platformArgs() }}
+
 {{ environment.web() }}
 {{ environment.phpComposerVersion() }}
 

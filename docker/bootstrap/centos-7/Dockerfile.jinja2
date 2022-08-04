@@ -2,6 +2,8 @@
 
 {{ docker.fromOfficial("centos", "7") }}
 
+{{ docker.platformArgs() }}
+
 {{ docker.version() }}
 
 {{ environment.general(charset='en_US.utf8') }}

@@ -1,5 +1,7 @@
 {{ docker.from("base-app", "debian-7") }}
 
+{{ docker.platformArgs() }}
+
 {{ environment.web() }}
 {{ environment.phpComposerVersion() }}
 

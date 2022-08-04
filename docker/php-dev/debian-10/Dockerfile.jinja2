@@ -1,5 +1,7 @@
 {{ docker.from("php", "debian-10", user) }}
 
+{{ docker.platformArgs() }}
+
 {{ docker.copy('conf/', '/opt/docker/') }}
 
 RUN set -x \

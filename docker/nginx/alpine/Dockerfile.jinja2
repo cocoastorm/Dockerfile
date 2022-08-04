@@ -1,5 +1,7 @@
 {{ docker.from("base", "alpine", user) }}
 
+{{ docker.platformArgs() }}
+
 {{ environment.web() }}
 {{ environment.nginx() }}
 

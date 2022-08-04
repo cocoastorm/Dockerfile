@@ -1,5 +1,7 @@
 {{ docker.fromOfficial("openjdk", "8") }}
 
+{{ docker.platformArgs() }}
+
 {{ docker.version() }}
 
 {{ environment.liquibase('3.6.3', 'org.postgresql.Driver', '/usr/share/java/postgresql.jar') }}

@@ -1,5 +1,7 @@
 {{ docker.from("php-apache", "debian-9") }}
 
+{{ docker.platformArgs() }}
+
 {{ environment.web() }}
 {{ environment.webPhp() }}
 {{ environment.webDevelopment() }}

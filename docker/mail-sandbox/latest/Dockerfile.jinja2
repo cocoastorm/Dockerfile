@@ -1,5 +1,7 @@
 {{ docker.from("php-nginx") }}
 
+{{ docker.platformArgs() }}
+
 {{ environment.mailbox() }}
 
 {{ docker.copy('conf/', '/opt/docker/') }}

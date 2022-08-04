@@ -2,6 +2,8 @@
 
 {{ docker.fromOfficial("solr", "6.6.3") }}
 
+{{ docker.platformArgs() }}
+
 {{ docker.version() }}
 
 {{ environment.general() }}

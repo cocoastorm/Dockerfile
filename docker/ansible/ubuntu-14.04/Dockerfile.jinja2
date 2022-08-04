@@ -1,5 +1,7 @@
 {{ docker.from("bootstrap", "ubuntu-14.04", user) }}
 
+{{ docker.platformArgs() }}
+
 RUN set -x \
     {{ ansible.ubuntu() }} \
     {{ provision.runBootstrap() }} \

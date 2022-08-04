@@ -1,5 +1,7 @@
 {{ docker.from("base", "latest", user) }}
 
+{{ docker.platformArgs() }}
+
 # Install services
 RUN /usr/local/bin/apt-install \
         liquidsoap \

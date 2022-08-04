@@ -1,5 +1,7 @@
 {{ docker.from("apache", "ubuntu-15.10", user) }}
 
+{{ docker.platformArgs() }}
+
 {{ environment.webDevelopment() }}
 
 {{ docker.copy('conf/', '/opt/docker/') }}

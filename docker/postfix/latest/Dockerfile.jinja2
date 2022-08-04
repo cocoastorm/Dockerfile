@@ -1,5 +1,7 @@
 {{ docker.from("base-app") }}
 
+{{ docker.platformArgs() }}
+
 {{ docker.copy('conf/', '/opt/docker/') }}
 
 RUN set -x \

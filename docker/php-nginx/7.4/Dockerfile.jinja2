@@ -1,5 +1,7 @@
 {{ docker.from("php", "7.4", user) }}
 
+{{ docker.platformArgs() }}
+
 {{ environment.web() }}
 {{ environment.webPhp() }}
 {{ environment.nginx() }}

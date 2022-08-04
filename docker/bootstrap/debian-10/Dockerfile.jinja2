@@ -2,6 +2,8 @@
 
 {{ docker.fromOfficial("debian", "buster") }}
 
+{{ docker.platformArgs() }}
+
 {{ docker.version() }}
 
 {{ environment.general() }}

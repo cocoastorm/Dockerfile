@@ -1,5 +1,7 @@
 {{ docker.from("php-apache", "centos-7-php56") }}
 
+{{ docker.platformArgs() }}
+
 {{ environment.web() }}
 {{ environment.webPhp() }}
 {{ environment.webDevelopment() }}

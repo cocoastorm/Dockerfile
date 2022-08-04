@@ -2,6 +2,8 @@
 
 {{ docker.from("samson", user="zendesk") }}
 
+{{ docker.platformArgs() }}
+
 {{ environment.general() }}
 {{ environment.base() }}
 {{ environment.baseApp() }}

@@ -1,5 +1,7 @@
 {{ docker.from("bootstrap", "debian-7", user) }}
 
+{{ docker.platformArgs() }}
+
 RUN set -x \
     {{ ansible.debian() }} \
     {{ provision.runBootstrap() }} \

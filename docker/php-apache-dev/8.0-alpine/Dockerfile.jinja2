@@ -1,5 +1,7 @@
 {{ docker.from("php-apache", "8.0-alpine") }}
 
+{{ docker.platformArgs() }}
+
 {{ environment.web() }}
 {{ environment.webPhp() }}
 {{ environment.webDevelopment() }}

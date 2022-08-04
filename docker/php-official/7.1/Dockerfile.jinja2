@@ -2,6 +2,8 @@
 
 {{ docker.fromOfficial("php", "7.1-fpm-buster") }}
 
+{{ docker.platformArgs() }}
+
 {{ docker.version() }}
 
 {{ environment.general() }}

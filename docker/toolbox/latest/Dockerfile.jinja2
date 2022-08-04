@@ -1,5 +1,7 @@
 {{ docker.fromOfficial("alpine") }}
 
+{{ docker.platformArgs() }}
+
 RUN apk add --no-cache \
         ca-certificates \
         dpkg \

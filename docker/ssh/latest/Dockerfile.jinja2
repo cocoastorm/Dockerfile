@@ -1,5 +1,7 @@
 {{ docker.from("base-app") }}
 
+{{ docker.platformArgs() }}
+
 RUN set -x \
     {{ ssh.ubuntu() }} \
     {{ provision.runBootstrap() }} \

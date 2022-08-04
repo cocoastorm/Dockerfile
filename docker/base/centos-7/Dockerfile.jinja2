@@ -1,5 +1,7 @@
 {{ docker.from("bootstrap", "centos-7", user) }}
 
+{{ docker.platformArgs() }}
+
 {{ environment.base() }}
 
 {{ docker.copy('conf/', '/opt/docker/') }}

@@ -1,5 +1,7 @@
 {{ docker.from("base-app","ubuntu-18.04") }}
 
+{{ docker.platformArgs() }}
+
 RUN apt-install \
         build-essential \
         gpg-agent \

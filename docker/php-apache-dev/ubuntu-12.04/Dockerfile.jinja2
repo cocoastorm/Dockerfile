@@ -1,5 +1,7 @@
 {{ docker.from("php-apache", "ubuntu-12.04") }}
 
+{{ docker.platformArgs() }}
+
 {{ environment.web() }}
 {{ environment.webPhp() }}
 {{ environment.webDevelopment() }}

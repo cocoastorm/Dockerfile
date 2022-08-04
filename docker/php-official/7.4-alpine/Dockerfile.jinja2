@@ -2,6 +2,8 @@
 
 {{ docker.fromOfficial("php", "7.4-fpm-alpine") }}
 
+{{ docker.platformArgs() }}
+
 {{ docker.version() }}
 
 {{ environment.general() }}

@@ -1,5 +1,7 @@
 {{ docker.from("php-nginx", "debian-7") }}
 
+{{ docker.platformArgs() }}
+
 {{ environment.web() }}
 {{ environment.webPhp() }}
 {{ environment.webDevelopment() }}

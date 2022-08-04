@@ -1,5 +1,7 @@
 {{ docker.from("nginx", "alpine", user) }}
 
+{{ docker.platformArgs() }}
+
 {{ environment.webDevelopment() }}
 
 {{ docker.copy('conf/', '/opt/docker/') }}

@@ -1,5 +1,7 @@
 {{ docker.from("bootstrap", "alpine", user) }}
 
+{{ docker.platformArgs() }}
+
 {{ docker.volume('/etc/letsencrypt') }}
 {{ docker.volume('/var/www') }}
 

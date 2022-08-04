@@ -1,5 +1,7 @@
 {{ docker.from("base", "centos-7", user) }}
 
+{{ docker.platformArgs() }}
+
 {{ environment.web() }}
 {{ environment.nginx() }}
 

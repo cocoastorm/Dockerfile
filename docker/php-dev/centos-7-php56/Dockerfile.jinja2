@@ -1,5 +1,7 @@
 {{ docker.from("php", "centos-7-php56", user) }}
 
+{{ docker.platformArgs() }}
+
 {{ docker.copy('conf/', '/opt/docker/') }}
 
 RUN set -x \

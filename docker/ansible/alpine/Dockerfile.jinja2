@@ -1,5 +1,7 @@
 {{ docker.from("bootstrap", "alpine", user) }}
 
+{{ docker.platformArgs() }}
+
 RUN set -x \
     {{ ansible.alpine() }} \
     {{ provision.runBootstrap() }} \

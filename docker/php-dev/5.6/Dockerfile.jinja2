@@ -1,5 +1,7 @@
 {{ docker.from("php", "5.6", user) }}
 
+{{ docker.platformArgs() }}
+
 {{ docker.copy('conf/', '/opt/docker/') }}
 
 RUN set -x \
