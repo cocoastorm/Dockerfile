@@ -5,6 +5,8 @@
 
 FROM --platform=$BUILDPLATFORM alpine:latest
 
+ARG TARGETARCH
+
 RUN apk add --no-cache \
         ca-certificates \
         dpkg \
@@ -24,7 +26,7 @@ RUN apk add --no-cache \
         git \
         gnupg \
     ## Install go-replace
-    && export dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
-    && export grArch="$(echo $dpkgArch | sed s/amd64/64/g)" \
+    && export grArch="$(echo $TARGETARCH | sed s/amd64/64/g)" \
     && wget -O "/usr/local/bin/go-replace" "https://github.com/webdevops/goreplace/releases/download/1.1.2/gr-$grArch-linux" \
-    && chmod +x "/usr/local/bin/go-replace"
+    && chmod +x "/usr/local/bin/go-replace" \
+    && go-replace version

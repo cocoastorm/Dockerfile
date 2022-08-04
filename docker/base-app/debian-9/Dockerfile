@@ -5,6 +5,8 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/base:debian-9
 
+ARG TARGETARCH
+
 ENV APPLICATION_USER=application \
     APPLICATION_GROUP=application \
     APPLICATION_PATH=/app \

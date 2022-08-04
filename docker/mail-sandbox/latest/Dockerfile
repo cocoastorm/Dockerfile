@@ -5,6 +5,8 @@
 
 FROM --platform=$BUILDPLATFORM webdevops/php-nginx:latest
 
+ARG TARGETARCH
+
 ENV MAILBOX_USERNAME="dev" \
     MAILBOX_PASSWORD="dev"
 

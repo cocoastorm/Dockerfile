@@ -5,6 +5,8 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/php:centos-7-php56
 
+ARG TARGETARCH
+
 COPY conf/ /opt/docker/
 
 RUN set -x \

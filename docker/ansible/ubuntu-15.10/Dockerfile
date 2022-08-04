@@ -5,6 +5,8 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/bootstrap:ubuntu-15.10
 
+ARG TARGETARCH
+
 RUN set -x \
     # Install ansible
     && apt-install \

@@ -5,6 +5,8 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/bootstrap:debian-8
 
+ARG TARGETARCH
+
 RUN set -x \
     # Install ansible
     && apt-install \

@@ -5,6 +5,8 @@
 
 FROM --platform=$BUILDPLATFORM webdevops/base-app:latest
 
+ARG TARGETARCH
+
 RUN set -x \
     && docker-service enable ssh \
     && docker-run-bootstrap \

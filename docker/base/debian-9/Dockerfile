@@ -5,6 +5,8 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/bootstrap:debian-9
 
+ARG TARGETARCH
+
 ENV DOCKER_CONF_HOME=/opt/docker/ \
     LOG_STDOUT="" \
     LOG_STDERR=""

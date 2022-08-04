@@ -5,6 +5,8 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/base:latest
 
+ARG TARGETARCH
+
 # Install services
 RUN /usr/local/bin/apt-install \
         liquidsoap \

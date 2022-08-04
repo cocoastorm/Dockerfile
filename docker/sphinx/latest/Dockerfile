@@ -5,6 +5,8 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/bootstrap:alpine
 
+ARG TARGETARCH
+
 RUN set -x \
     && apk-install \
     # General python

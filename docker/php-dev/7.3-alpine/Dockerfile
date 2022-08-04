@@ -5,6 +5,8 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/php:7.3-alpine
 
+ARG TARGETARCH
+
 COPY conf/ /opt/docker/
 
 RUN set -x \

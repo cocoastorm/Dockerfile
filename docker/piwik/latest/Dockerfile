@@ -5,6 +5,8 @@
 
 FROM --platform=$BUILDPLATFORM webdevops/php-nginx:7.1
 
+ARG TARGETARCH
+
 ENV WEB_DOCUMENT_ROOT  /app/piwik/
 ENV PIWIK_URL          http://example.com/
 

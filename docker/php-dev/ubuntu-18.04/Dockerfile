@@ -5,6 +5,8 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/php:ubuntu-18.04
 
+ARG TARGETARCH
+
 COPY conf/ /opt/docker/
 
 RUN set -x \

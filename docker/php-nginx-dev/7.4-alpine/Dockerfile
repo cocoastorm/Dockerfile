@@ -5,6 +5,8 @@
 
 FROM --platform=$BUILDPLATFORM webdevops/php-nginx:7.4-alpine
 
+ARG TARGETARCH
+
 ENV WEB_DOCUMENT_ROOT=/app \
     WEB_DOCUMENT_INDEX=index.php \
     WEB_ALIAS_DOMAIN=*.vm \

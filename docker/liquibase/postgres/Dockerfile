@@ -5,6 +5,8 @@
 
 FROM --platform=$BUILDPLATFORM openjdk:8
 
+ARG TARGETARCH
+
 LABEL maintainer=info@webdevops.io \
       vendor=WebDevOps.io \
       io.webdevops.layout=8 \

@@ -5,6 +5,8 @@
 
 FROM --platform=$BUILDPLATFORM webdevops/base-app:latest
 
+ARG TARGETARCH
+
 COPY conf/ /opt/docker/
 
 RUN set -x \

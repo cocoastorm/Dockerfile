@@ -5,6 +5,8 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/base:alpine
 
+ARG TARGETARCH
+
 ENV VARNISH_PORT    80
 
 ENV VARNISH_CONFIG  ""

@@ -5,6 +5,8 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/bootstrap:centos-7
 
+ARG TARGETARCH
+
 RUN set -x \
     # Install ansible
     && yum-install \

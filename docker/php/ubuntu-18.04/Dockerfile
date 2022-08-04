@@ -5,6 +5,8 @@
 
 FROM --platform=$BUILDPLATFORM webdevops/base-app:ubuntu-18.04
 
+ARG TARGETARCH
+
 ENV WEB_DOCUMENT_ROOT=/app \
     WEB_DOCUMENT_INDEX=index.php \
     WEB_ALIAS_DOMAIN=*.vm \

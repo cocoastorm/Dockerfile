@@ -5,6 +5,8 @@
 
 FROM --platform=$BUILDPLATFORM webdevops/base-app:ubuntu-18.04
 
+ARG TARGETARCH
+
 RUN apt-install \
         build-essential \
         gpg-agent \

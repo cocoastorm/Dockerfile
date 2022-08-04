@@ -5,6 +5,8 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/php:debian-8-php7
 
+ARG TARGETARCH
+
 COPY conf/ /opt/docker/
 
 RUN set -x \

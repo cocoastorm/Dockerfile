@@ -5,6 +5,8 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/base:latest
 
+ARG TARGETARCH
+
 ENV FTP_USER=application \
     FTP_PASSWORD=application \
     FTP_UID=1000 \
