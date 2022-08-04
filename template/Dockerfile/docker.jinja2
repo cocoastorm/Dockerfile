@@ -14,6 +14,10 @@ FROM {{ image }}:{{ tag }}
 {%- endif %}
 {%- endmacro %}
 
+{% macro platformArgs() -%}
+ARG TARGETARCH
+{%- endmacro %}
+
 {% macro version() -%}
 LABEL maintainer=info@webdevops.io \
       vendor=WebDevOps.io \
