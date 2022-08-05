@@ -2,16 +2,19 @@
 {% import 'Dockerfile/tools.jinja2' as tools %}
 
 {% macro dockerStage() %}
-# Staged baselayout builder
+# staged baselayout builder
 {{ docker.from("toolbox", "latest", user) }} AS baselayout
+
+{{ docker.platformArgs() }}
+
 RUN mkdir -p \
         /baselayout/sbin \
         /baselayout/usr/local/bin \
     # Baselayout scripts
     && wget -O /tmp/baselayout-install.sh https://raw.githubusercontent.com/webdevops/Docker-Image-Baselayout/master/install.sh \
     && sh /tmp/baselayout-install.sh /baselayout \
-    {{ tools.goreplace(path="/baselayout/usr/local/bin") }} \
-    {{ tools.gosu(path="/baselayout/sbin") }}
+    {{ tools.goreplace() }} \
+    {{ tools.gosu() }}
 {% endmacro %}
 
 {% macro copy() %}
