@@ -4,8 +4,11 @@
 #+++++++++++++++++++++++++++++++++++++++
 
 
-# Staged baselayout builder
+# staged baselayout builder
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/toolbox:latest AS baselayout
+
+ARG TARGETARCH
+
 RUN mkdir -p \
         /baselayout/sbin \
         /baselayout/usr/local/bin \
@@ -14,17 +17,16 @@ RUN mkdir -p \
     && sh /tmp/baselayout-install.sh /baselayout \
     ## Install go-replace
     && export grArch="$(echo $TARGETARCH | sed s/amd64/64/g)" \
-    && wget -O "/baselayout/usr/local/bin/go-replace" "https://github.com/webdevops/goreplace/releases/download/1.1.2/gr-$grArch-linux" \
-    && chmod +x "/baselayout/usr/local/bin/go-replace" \
-    && go-replace version \
+    && wget -O "/usr/local/bin/go-replace" "https://github.com/webdevops/goreplace/releases/download/1.1.2/gr-$grArch-linux" \
+    && chmod +x "/usr/local/bin/go-replace" \
     # Install gosu
-    && wget -O "/baselayout/sbin/gosu" "https://github.com/tianon/gosu/releases/download/1.10/gosu-$TARGETARCH" \
-    && wget -O "/baselayout/sbin/gosu.asc" "https://github.com/tianon/gosu/releases/download/1.10/gosu-$TARGETARCH.asc" \
+    && wget -O "/sbin/gosu" "https://github.com/tianon/gosu/releases/download/1.10/gosu-$TARGETARCH" \
+    && wget -O "/sbin/gosu.asc" "https://github.com/tianon/gosu/releases/download/1.10/gosu-$TARGETARCH.asc" \
     && export GNUPGHOME="$(mktemp -d)" \
     && gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
-    && gpg --batch --verify /baselayout/sbin/gosu.asc "/baselayout/sbin/gosu" \
+    && gpg --batch --verify /sbin/gosu.asc "/sbin/gosu" \
     && rm -rf "$GNUPGHOME" \
-    && chmod +x "/baselayout/sbin/gosu"
+    && chmod +x "/sbin/gosu"
 
 
 FROM --platform=$BUILDPLATFORM ubuntu:18.04

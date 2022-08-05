@@ -28,5 +28,4 @@ RUN apk add --no-cache \
     ## Install go-replace
     && export grArch="$(echo $TARGETARCH | sed s/amd64/64/g)" \
     && wget -O "/usr/local/bin/go-replace" "https://github.com/webdevops/goreplace/releases/download/1.1.2/gr-$grArch-linux" \
-    && chmod +x "/usr/local/bin/go-replace" \
-    && go-replace version
+    && chmod +x "/usr/local/bin/go-replace"
