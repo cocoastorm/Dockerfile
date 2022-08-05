@@ -2,8 +2,11 @@
 {% import 'Dockerfile/tools.jinja2' as tools %}
 
 {% macro dockerStage() %}
-# Staged baselayout builder
+# staged baselayout builder
 {{ docker.from("toolbox", "latest", user) }} AS baselayout
+
+{{ docker.platformArgs() }}
+
 RUN mkdir -p \
         /baselayout/sbin \
         /baselayout/usr/local/bin \

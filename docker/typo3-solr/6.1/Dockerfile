@@ -4,8 +4,11 @@
 #+++++++++++++++++++++++++++++++++++++++
 
 
-# Staged baselayout builder
+# staged baselayout builder
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/toolbox:latest AS baselayout
+
+ARG TARGETARCH
+
 RUN mkdir -p \
         /baselayout/sbin \
         /baselayout/usr/local/bin \
