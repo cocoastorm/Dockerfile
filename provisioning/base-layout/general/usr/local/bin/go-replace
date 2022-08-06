@@ -1,0 +1,24 @@
+#!/bin/sh
+
+set -e
+
+ARCH=$(dpkg --print-architecture | awk -F- '{ print $NF }')
+VERSION="1.1.2"
+
+case "$ARCH" in \
+    amd64) GR_ARCH='64';; \
+    arm64) GR_ARCH='arm64';; \
+    *) echo "unsupported architecture"; exit 1 ;; \
+esac
+
+downloadGoReplace() {
+    echo "downloading go-replace-$GR_ARCH"
+    wget -O "/usr/local/bin/go-replace-$ARCH" "https://github.com/webdevops/goreplace/releases/download/$VERSION/gr-$GR_ARCH-linux"
+    chmod +x "/usr/local/bin/go-replace-$ARCH"
+}
+
+if [ ! -x "/usr/local/bin/go-replace-$ARCH" ]; then
+    downloadGoReplace
+fi
+
+exec "/usr/local/bin/go-replace-$ARCH" $@

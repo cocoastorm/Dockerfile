@@ -14,6 +14,10 @@ FROM {{ image }}:{{ tag }}
 {%- endif %}
 {%- endmacro %}
 
+{% macro image(name, tag="latest", user="webdevops") -%}
+{{ user }}/{{ name }}:{{ tag }}
+{%- endmacro %}
+
 {% macro platformArgs() -%}
 ARG TARGETARCH
 {%- endmacro %}
@@ -29,8 +33,12 @@ LABEL maintainer=info@webdevops.io \
 ADD {{ source }} {{ target }}
 {%- endmacro -%}
 
-{%- macro copy(source, target) -%}
+{%- macro copy(source, target, fromLayer='') -%}
+{% if fromLayer -%}
+COPY --from={{ fromLayer }} {{ source }} {{ target }}
+{%- else -%}
 COPY {{ source }} {{ target }}
+{%- endif %}
 {%- endmacro -%}
 
 {%- macro expose(port) -%}

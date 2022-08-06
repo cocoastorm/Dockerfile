@@ -1,0 +1,27 @@
+{{ docker.fromOfficial("debian", "buster-slim") }}
+
+{{ docker.platformArgs() }}
+
+{{ docker.copy("/baselayout", "/baselayout", docker.image("base-layout", user=user)) }}
+
+RUN set -eux; \
+        apt-get update; \
+        apt-get install -y --no-install-recommends \
+        ca-certificates \
+        dpkg \
+        openssl \
+        curl \
+        sed \
+        wget \
+        zip \
+        unzip \
+        bzip2 \
+        p7zip \
+        ldnsutils \
+        libldns2 \
+        openssh-client \
+        rsync \
+        git \
+        gnupg \
+    ; \
+    rm -rf /var/lib/apt/lists/*
