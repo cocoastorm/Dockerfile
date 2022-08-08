@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/php:8.0-alpine
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 ENV WEB_DOCUMENT_ROOT=/app \
@@ -30,7 +31,9 @@ RUN set -x \
         s!^(\s*CustomLog)\s+\S+!\1 /proc/self/fd/1!g; \
         s!^(\s*ErrorLog)\s+\S+!\1 /proc/self/fd/2!g; \
         ' /etc/apache2/httpd.conf \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 EXPOSE 80 443

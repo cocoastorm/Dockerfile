@@ -7,6 +7,7 @@
 # staged baselayout builder
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/toolbox:latest AS base
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 RUN set -eux \
@@ -27,6 +28,7 @@ RUN set -eux \
 
 FROM --platform=$BUILDPLATFORM solr:6.3.0
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 LABEL maintainer=info@webdevops.io \
@@ -57,6 +59,7 @@ RUN apt-update \
     && chown -R solr:solr /opt/solr/server/solr \
     && chmod 755 /opt/solr/server/solr \
     && rm -rf /tmp/solr \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 USER solr

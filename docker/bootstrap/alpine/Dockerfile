@@ -7,6 +7,7 @@
 # staged baselayout builder
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/toolbox:latest AS base
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 RUN set -eux \
@@ -27,6 +28,7 @@ RUN set -eux \
 
 FROM --platform=$BUILDPLATFORM alpine:3.11
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 LABEL maintainer=info@webdevops.io \
@@ -58,5 +60,7 @@ RUN set -x \
     ## Fix su execution (eg for tests)
     && mkdir -p /etc/pam.d/ \
     && echo 'auth sufficient pam_rootok.so' >> /etc/pam.d/su \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup

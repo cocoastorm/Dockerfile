@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM webdevops/base-app:debian-7
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 ENV WEB_DOCUMENT_ROOT=/app \
@@ -57,7 +58,9 @@ RUN set -x \
     # Enable php services
     && docker-service enable syslog \
     && docker-service enable cron \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 EXPOSE 9000

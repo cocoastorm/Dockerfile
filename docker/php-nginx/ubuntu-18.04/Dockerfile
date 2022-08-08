@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/php:ubuntu-18.04
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 ENV WEB_DOCUMENT_ROOT=/app \
@@ -21,7 +22,9 @@ RUN set -x \
     # Install nginx
     && apt-install \
         nginx \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 EXPOSE 80 443

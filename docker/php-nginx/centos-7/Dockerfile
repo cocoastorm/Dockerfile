@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/php:centos-7
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 ENV WEB_DOCUMENT_ROOT=/app \
@@ -21,7 +22,9 @@ RUN set -x \
     # Install tools
     && yum-install \
         nginx \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 EXPOSE 80 443

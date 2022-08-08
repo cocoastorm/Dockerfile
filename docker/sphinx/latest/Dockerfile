@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/bootstrap:alpine
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 RUN set -x \
@@ -34,5 +35,7 @@ RUN set -x \
     && pip install t3fieldlisttable \
     && pip install t3tablerows \
     && pip install t3targets \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup

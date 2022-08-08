@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/bootstrap:centos-7
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 ENV DOCKER_CONF_HOME=/opt/docker/ \
@@ -24,7 +25,9 @@ RUN set -x \
         net-tools \
         tzdata \
     && chmod +s /sbin/gosu \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 ENTRYPOINT ["/entrypoint"]

@@ -7,6 +7,7 @@
 # staged baselayout builder
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/toolbox:latest AS base
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 RUN set -eux \
@@ -27,6 +28,7 @@ RUN set -eux \
 
 FROM --platform=$BUILDPLATFORM php:5.6-fpm-stretch
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 LABEL maintainer=info@webdevops.io \
@@ -81,7 +83,9 @@ RUN set -x \
         net-tools \
         tzdata \
     && chmod +s /sbin/gosu \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 RUN set -x \
@@ -98,7 +102,9 @@ RUN set -x \
         git \
         patch \
     && /usr/local/bin/generate-locales \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 RUN set -x \
@@ -228,7 +234,9 @@ RUN set -x \
     # Enable php services
     && docker-service enable syslog \
     && docker-service enable cron \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 WORKDIR /

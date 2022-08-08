@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/php:centos-7-php7
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 ENV WEB_DOCUMENT_ROOT=/app \
@@ -25,7 +26,9 @@ RUN set -x \
         s!^(\s*CustomLog)\s+\S+!\1 /proc/self/fd/1!g; \
         s!^(\s*ErrorLog)\s+\S+!\1 /proc/self/fd/2!g; \
         ' /etc/httpd/conf/httpd.conf /etc/httpd/conf.d/ssl.conf \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 EXPOSE 80 443

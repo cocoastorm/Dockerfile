@@ -5,5 +5,6 @@
 
 FROM --platform=$BUILDPLATFORM alpine:latest
 
+ARG BUILDARCH
 ARG TARGETARCH
 

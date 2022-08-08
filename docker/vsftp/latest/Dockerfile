@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/base:latest
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 ENV FTP_USER=application \
@@ -23,7 +24,9 @@ RUN set -x \
     && mkdir -p \
             /var/run/vsftpd/empty \
             /var/log/supervisor \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 EXPOSE 20 21 12020 12021 12022 12023 12024 12025

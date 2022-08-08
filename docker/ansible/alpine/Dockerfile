@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/bootstrap:alpine
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 RUN set -x \
@@ -29,5 +30,7 @@ RUN set -x \
     && chmod 750 /usr/bin/ansible* \
     # Cleanup
     && apk del python-dev \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup

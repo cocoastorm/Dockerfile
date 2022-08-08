@@ -7,6 +7,7 @@
 # staged baselayout builder
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/toolbox:latest AS base
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 RUN set -eux \
@@ -27,6 +28,7 @@ RUN set -eux \
 
 FROM --platform=$BUILDPLATFORM ubuntu:17.04
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 LABEL maintainer=info@webdevops.io \
@@ -59,5 +61,7 @@ RUN set -x \
     && sed -i 's/archive.ubuntu.com\|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list \
     && apt-update \
     && /usr/local/bin/generate-dockerimage-info \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup

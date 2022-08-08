@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM alpine:latest
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 COPY --from=ghcr.io/cocoastorm/webdevops/base-layout:latest /baselayout /baselayout

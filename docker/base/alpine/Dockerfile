@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/bootstrap:alpine
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 ENV DOCKER_CONF_HOME=/opt/docker/ \
@@ -25,7 +26,9 @@ RUN set -x \
         tzdata \
         busybox-suid \
     && chmod +s /sbin/gosu \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 ENTRYPOINT ["/entrypoint"]

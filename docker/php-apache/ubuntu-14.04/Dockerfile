@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/php:ubuntu-14.04
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 ENV WEB_DOCUMENT_ROOT=/app \
@@ -29,7 +30,9 @@ RUN set -x \
     && rm -f /etc/apache2/sites-enabled/* \
     && a2enmod actions fastcgi ssl rewrite headers expires \
     && mkdir -p /var/lock/apache2 \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 EXPOSE 80 443

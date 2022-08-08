@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/bootstrap:centos-7
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 RUN set -x \
@@ -29,5 +30,7 @@ RUN set -x \
     && chmod 750 /usr/bin/ansible* \
     # Cleanup
     && yum erase -y python-devel \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup

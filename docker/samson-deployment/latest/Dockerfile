@@ -7,6 +7,7 @@
 # staged baselayout builder
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/toolbox:latest AS base
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 RUN set -eux \
@@ -27,6 +28,7 @@ RUN set -eux \
 
 FROM --platform=$BUILDPLATFORM zendesk/samson:latest
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 ENV TERM="xterm" \
@@ -64,6 +66,7 @@ RUN set -x \
         ca-certificates \
         locales \
         gnupg \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 ###############################################################################
@@ -96,6 +99,7 @@ RUN set -x \
         build-essential \
         libssl-dev \
         libffi-dev \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 RUN set -x \
@@ -109,7 +113,9 @@ RUN set -x \
         net-tools \
         tzdata \
     && chmod +s /sbin/gosu \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 ###############################################################################
@@ -130,7 +136,9 @@ RUN set -x \
         git \
         patch \
     && /usr/local/bin/generate-locales \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 ###############################################################################
@@ -169,6 +177,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && set -x \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer1 --version=1.10.16 \
     ## Enable ansible for deployment user
     && chmod 755 /usr/local/bin/ansible* \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 # NPM stack
@@ -178,6 +187,7 @@ RUN curl -sL https://deb.nodesource.com/setup_9.x | bash - \
     && npm install -g grunt-cli \
     && npm install -g bower \
     && npm install -g npm-cache \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 # Deployer stack
@@ -194,6 +204,7 @@ RUN set -x \
     && chmod +x /usr/local/bin/dep \
     # Deployer: capistrano (http://capistranorb.com/)
     && gem install capistrano \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 # Upload
@@ -206,7 +217,9 @@ RUN rake assets:precompile \
     && docker-service enable cron \
     && /opt/docker/bin/provision run --tag bootstrap --role webdevops-samson-deployment \
     && /opt/docker/bin/bootstrap.sh \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 EXPOSE 80

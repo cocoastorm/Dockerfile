@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM webdevops/base-app:latest
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 COPY conf/ /opt/docker/
@@ -12,7 +13,9 @@ COPY conf/ /opt/docker/
 RUN set -x \
     && docker-service enable syslog \
     && docker-service enable postfix \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 EXPOSE 25 465 587

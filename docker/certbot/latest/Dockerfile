@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/bootstrap:alpine
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 VOLUME /etc/letsencrypt
@@ -21,5 +22,7 @@ RUN set -x \
     && pip install --upgrade pip \
     && hash -r \
     && pip install certbot \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup

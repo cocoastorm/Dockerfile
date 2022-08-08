@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM webdevops/base-app:ubuntu-18.04
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 RUN apt-install \
@@ -35,6 +36,7 @@ RUN apt-install \
     && git clone --depth 1 https://github.com/webdevops/Dockerfile.git /tmp/Dockerfile \
     && cd /tmp/Dockerfile \
     && make setup \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 WORKDIR /app

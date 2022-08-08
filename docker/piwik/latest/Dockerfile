@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM webdevops/php-nginx:7.1
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 ENV WEB_DOCUMENT_ROOT  /app/piwik/
@@ -20,7 +21,9 @@ RUN set -x \
     && chown -R application /app \
     && find /app/ -type d -exec chmod 0755 {} \; \
     && find /app/ -type f -exec chmod 0644 {} \; \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 VOLUME /app
