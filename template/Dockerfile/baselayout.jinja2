@@ -3,11 +3,12 @@
 
 {% macro dockerStage() %}
 # staged baselayout builder
-{{ docker.from("toolbox", "latest", user) }} AS base
+{{ docker.from("toolbox", "alpine", user) }} AS base
 
 {{ docker.platformArgs() }}
 
 RUN set -eux \
+    mkdir -p /baselayout/sbin /baselayout/usr/local/bin \
     {{ tools.goreplace(path="/baselayout/usr/local/bin") }} \
     {{ tools.gosu(path="/baselayout/sbin") }}
 {%- endmacro %}

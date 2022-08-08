@@ -5,12 +5,13 @@
 
 
 # staged baselayout builder
-FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/toolbox:latest AS base
+FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/toolbox:alpine AS base
 
 ARG BUILDARCH
 ARG TARGETARCH
 
 RUN set -eux \
+    mkdir -p /baselayout/sbin /baselayout/usr/local/bin \
     ## install go-replace
     && export dpkgArch=$(dpkg --print-architecture | awk -F- '{ print $NF }') \
     && export grArch="$(echo $dpkgArch | sed s/amd64/64/g)" \
