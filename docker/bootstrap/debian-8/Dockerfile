@@ -12,12 +12,12 @@ ARG TARGETARCH
 
 RUN set -eux \
     ## install go-replace
-    dpkgArch=$([ "$TARGETARCH" != "" ] && echo "$TARGETARCH" || dpkg --print-architecture | awk -F- '{ print $NF }'); \
-    grArch="$(echo $dpkgArch | sed s/amd64/64/g)" \
+    && export dpkgArch=$(dpkg --print-architecture | awk -F- '{ print $NF }') \
+    && export grArch="$(echo $dpkgArch | sed s/amd64/64/g)" \
     && wget -O "/baselayout/usr/local/bin/go-replace-$dpkgArch" "https://github.com/webdevops/goreplace/releases/download/1.1.2/gr-$grArch-linux" \
     && chmod +x "/baselayout/usr/local/bin/go-replace-$dpkgArch" \
     ## install gosu
-    dpkgArch=$([ "$TARGETARCH" != "" ] && echo "$TARGETARCH" || dpkg --print-architecture | awk -F- '{ print $NF }'); \
+    && export dpkgArch=$(dpkg --print-architecture | awk -F- '{ print $NF }'); \
         wget -O "/baselayout/sbin/gosu" "https://github.com/tianon/gosu/releases/download/1.10/gosu-$dpkgArch"; \
         wget -O "/baselayout/sbin/gosu.asc" "https://github.com/tianon/gosu/releases/download/1.10/gosu-$dpkgArch.asc"; \
     GNUPGHOME="$(mktemp -d)"; \
