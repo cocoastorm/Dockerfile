@@ -8,7 +8,9 @@
 {{ docker.platformArgs() }}
 
 RUN set -eux \
-    mkdir -p /baselayout/sbin /baselayout/usr/local/bin \
+    mkdir -p \
+        /baselayout/sbin \
+        /baselayout/usr/local/bin \
     {{ tools.goreplace(path="/baselayout/usr/local/bin") }} \
     {{ tools.gosu(path="/baselayout/sbin") }}
 {%- endmacro %}

@@ -8,6 +8,10 @@ FROM --platform=$BUILDPLATFORM alpine:latest
 ARG BUILDARCH
 ARG TARGETARCH
 
+RUN mkdir -p \
+    /baselayout/sbin \
+    /baselayout/usr/local/bin
+
 COPY --from=ghcr.io/cocoastorm/webdevops/base-layout:latest /baselayout /baselayout
 
 RUN set -eux; \

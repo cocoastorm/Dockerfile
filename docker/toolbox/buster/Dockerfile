@@ -8,6 +8,10 @@ FROM --platform=$BUILDPLATFORM debian:buster-slim
 ARG BUILDARCH
 ARG TARGETARCH
 
+RUN mkdir -p \
+    /baselayout/bin \
+    /baselayout/usr/local/bin
+
 COPY --from=ghcr.io/cocoastorm/webdevops/base-layout:latest /baselayout /baselayout
 
 RUN set -eux; \

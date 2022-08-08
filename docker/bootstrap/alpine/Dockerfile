@@ -11,7 +11,9 @@ ARG BUILDARCH
 ARG TARGETARCH
 
 RUN set -eux \
-    mkdir -p /baselayout/sbin /baselayout/usr/local/bin \
+    mkdir -p \
+        /baselayout/sbin \
+        /baselayout/usr/local/bin \
     ## install go-replace
     && export dpkgArch=$(dpkg --print-architecture | awk -F- '{ print $NF }') \
     && export grArch="$(echo $dpkgArch | sed s/amd64/64/g)" \

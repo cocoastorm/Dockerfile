@@ -2,6 +2,10 @@
 
 {{ docker.platformArgs() }}
 
+RUN mkdir -p \
+    /baselayout/bin \
+    /baselayout/usr/local/bin
+
 {{ docker.copy("/baselayout", "/baselayout", docker.image("base-layout", user=user)) }}
 
 RUN set -eux; \
