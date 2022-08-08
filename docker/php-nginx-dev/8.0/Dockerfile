@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM --platform=$BUILDPLATFORM webdevops/php-nginx:8.0
+FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/php-nginx:8.0
 
 ARG BUILDARCH
 ARG TARGETARCH
