@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/bootstrap:ubuntu-15.10
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 RUN set -x \
@@ -30,5 +31,7 @@ RUN set -x \
         build-essential \
         libssl-dev \
         libffi-dev \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup

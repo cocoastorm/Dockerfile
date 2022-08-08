@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM webdevops/php-apache:7.2-alpine
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 ENV WEB_DOCUMENT_ROOT=/app \
@@ -39,5 +40,7 @@ RUN set -x \
     && docker-service enable syslog \
     && docker-service enable postfix \
     && docker-service enable ssh \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup

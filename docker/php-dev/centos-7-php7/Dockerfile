@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/php:centos-7-php7
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 COPY conf/ /opt/docker/
@@ -25,5 +26,7 @@ RUN set -x \
     && docker-service enable syslog \
     && docker-service enable postfix \
     && docker-service enable ssh \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup

@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/base:latest
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 # Install services
@@ -14,7 +15,9 @@ RUN /usr/local/bin/apt-install \
         mplayer \
         gstreamer1.0-plugins-base \
         gstreamer1.0-plugins-good \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 ENV LIQUIDSOAP_USER            "liquidsoap"

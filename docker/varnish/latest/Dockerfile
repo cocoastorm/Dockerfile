@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/base:alpine
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 ENV VARNISH_PORT    80
@@ -21,7 +22,9 @@ COPY conf/ /opt/docker/
 RUN set -x \
     && apk-install \
         varnish \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 CMD ["varnishd"]

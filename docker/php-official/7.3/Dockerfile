@@ -5,32 +5,30 @@
 
 
 # staged baselayout builder
-FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/toolbox:latest AS baselayout
+FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/toolbox:latest AS base
 
+ARG BUILDARCH
 ARG TARGETARCH
 
-RUN mkdir -p \
-        /baselayout/sbin \
-        /baselayout/usr/local/bin \
-    # Baselayout scripts
-    && wget -O /tmp/baselayout-install.sh https://raw.githubusercontent.com/webdevops/Docker-Image-Baselayout/master/install.sh \
-    && sh /tmp/baselayout-install.sh /baselayout \
-    ## Install go-replace
-    && export grArch="$(echo $TARGETARCH | sed s/amd64/64/g)" \
-    && wget -O "/baselayout/usr/local/bin/go-replace" "https://github.com/webdevops/goreplace/releases/download/1.1.2/gr-$grArch-linux" \
-    && chmod +x "/baselayout/usr/local/bin/go-replace" \
-    # Install gosu
-    && wget -O "/baselayout/sbin/gosu" "https://github.com/tianon/gosu/releases/download/1.10/gosu-$TARGETARCH" \
-    && wget -O "/baselayout/sbin/gosu.asc" "https://github.com/tianon/gosu/releases/download/1.10/gosu-$TARGETARCH.asc" \
-    && export GNUPGHOME="$(mktemp -d)" \
-    && gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
-    && gpg --batch --verify /baselayout/sbin/gosu.asc "/baselayout/sbin/gosu" \
-    && rm -rf "$GNUPGHOME" \
-    && chmod +x "/baselayout/sbin/gosu"
-
+RUN set -eux \
+    ## install go-replace
+    dpkgArch=$([ "$TARGETARCH" != "" ] && echo "$TARGETARCH" || dpkg --print-architecture | awk -F- '{ print $NF }'); \
+    grArch="$(echo $dpkgArch | sed s/amd64/64/g)" \
+    && wget -O "/baselayout/usr/local/bin/go-replace-$dpkgArch" "https://github.com/webdevops/goreplace/releases/download/1.1.2/gr-$grArch-linux" \
+    && chmod +x "/baselayout/usr/local/bin/go-replace-$dpkgArch" \
+    ## install gosu
+    dpkgArch=$([ "$TARGETARCH" != "" ] && echo "$TARGETARCH" || dpkg --print-architecture | awk -F- '{ print $NF }'); \
+        wget -O "/baselayout/sbin/gosu" "https://github.com/tianon/gosu/releases/download/1.10/gosu-$dpkgArch"; \
+        wget -O "/baselayout/sbin/gosu.asc" "https://github.com/tianon/gosu/releases/download/1.10/gosu-$dpkgArch.asc"; \
+    GNUPGHOME="$(mktemp -d)"; \
+        gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
+        gpg --batch --verify /baselayout/sbin/gosu.asc "/baselayout/sbin/gosu"; \
+        rm -rf "$GNUPGHOME"; \
+        chmod +x "/baselayout/sbin/gosu";
 
 FROM --platform=$BUILDPLATFORM php:7.3-fpm-buster
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 LABEL maintainer=info@webdevops.io \
@@ -53,9 +51,8 @@ ENV PHP_SENDMAIL_PATH="/usr/sbin/sendmail -t -i"
 ENV COMPOSER_VERSION="2"
 
 
-# Baselayout copy (from staged image)
-COPY --from=baselayout /baselayout /
-
+# base copy (from staged image)
+COPY --from=base /baselayout /
 
 COPY conf/ /opt/docker/
 
@@ -86,7 +83,9 @@ RUN set -x \
         net-tools \
         tzdata \
     && chmod +s /sbin/gosu \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 RUN set -x \
@@ -103,7 +102,9 @@ RUN set -x \
         git \
         patch \
     && /usr/local/bin/generate-locales \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 RUN set -x \
@@ -237,7 +238,9 @@ RUN set -x \
     # Enable php services
     && docker-service enable syslog \
     && docker-service enable cron \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 WORKDIR /

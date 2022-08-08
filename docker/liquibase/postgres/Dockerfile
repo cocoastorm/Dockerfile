@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM openjdk:8
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 LABEL maintainer=info@webdevops.io \

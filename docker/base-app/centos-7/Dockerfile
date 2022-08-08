@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/base:centos-7
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 ENV APPLICATION_USER=application \
@@ -30,5 +31,7 @@ RUN set -x \
         git \
         patch \
     && /usr/local/bin/generate-locales \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup

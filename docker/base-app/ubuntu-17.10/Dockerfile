@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/base:ubuntu-17.10
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 ENV APPLICATION_USER=application \
@@ -30,5 +31,7 @@ RUN set -x \
         patch \
     && mkdir -p /var/lib/syslog-ng/ \
     && /usr/local/bin/generate-locales \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup

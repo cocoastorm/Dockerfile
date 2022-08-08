@@ -2,7 +2,10 @@
 
 {{ docker.platformArgs() }}
 
-RUN apk add --no-cache \
+{{ docker.copy("/baselayout", "/baselayout", docker.image("base-layout", user=user)) }}
+
+RUN set -eux; \
+    apk add --no-cache \
         ca-certificates \
         dpkg \
         openssl \
@@ -20,4 +23,4 @@ RUN apk add --no-cache \
         rsync \
         git \
         gnupg \
-    {{ tools.goreplace() }}
+    ; \

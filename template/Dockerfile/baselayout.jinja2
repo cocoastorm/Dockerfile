@@ -3,21 +3,16 @@
 
 {% macro dockerStage() %}
 # staged baselayout builder
-{{ docker.from("toolbox", "latest", user) }} AS baselayout
+{{ docker.from("toolbox", "latest", user) }} AS base
 
 {{ docker.platformArgs() }}
 
-RUN mkdir -p \
-        /baselayout/sbin \
-        /baselayout/usr/local/bin \
-    # Baselayout scripts
-    && wget -O /tmp/baselayout-install.sh https://raw.githubusercontent.com/webdevops/Docker-Image-Baselayout/master/install.sh \
-    && sh /tmp/baselayout-install.sh /baselayout \
+RUN set -eux \
     {{ tools.goreplace(path="/baselayout/usr/local/bin") }} \
     {{ tools.gosu(path="/baselayout/sbin") }}
-{% endmacro %}
+{%- endmacro %}
 
 {% macro copy() %}
-# Baselayout copy (from staged image)
-COPY --from=baselayout /baselayout /
-{% endmacro %}
+# base copy (from staged image)
+COPY --from=base /baselayout /
+{%- endmacro %}

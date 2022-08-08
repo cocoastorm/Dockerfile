@@ -5,6 +5,7 @@
 
 FROM --platform=$BUILDPLATFORM webdevops/php-nginx:latest
 
+ARG BUILDARCH
 ARG TARGETARCH
 
 ENV MAILBOX_USERNAME="dev" \
@@ -19,7 +20,9 @@ RUN set -x \
         dovecot-imapd \
     && docker-service enable postfix \
     && docker-service enable dovecot \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    && symlink-go-replace \
     && docker-image-cleanup
 
 RUN set -x \
