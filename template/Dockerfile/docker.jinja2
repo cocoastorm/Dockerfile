@@ -64,5 +64,6 @@ CMD ["{{ command }}"]
 {%- endmacro -%}
 
 {%- macro cleanup() -%}
+    && symlink-go-replace \
     && docker-image-cleanup
 {%- endmacro -%}
