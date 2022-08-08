@@ -10,8 +10,26 @@ concurrency:
   group: "${{ github.ref }}"
 
 jobs:
-  build-toolbox-image:
+  build-baselayout-image:
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: "Docker Build: base-layout"
+        uses: './.github/actions/composite-docker'
+        with:
+          registry-user: ${{ github.repository_owner }}
+          image-name: "webdevops/base-layout"
+          image-context: "docker/base-layout/latest"
+          image-tags: "ghcr.io/cocoastorm/webdevops/base-layout:latest"
+
+  build-toolbox-image:
+    needs: build-baselayout-image
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        flavor: ["alpine", "buster"]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -22,8 +40,8 @@ jobs:
           registry-user: ${{ github.repository_owner }}
           registry-secret: ${{ secrets.GITHUB_TOKEN }}
           image-name: "webdevops/toolbox"
-          image-context: "docker/toolbox/latest"
-          image-tags: "ghcr.io/cocoastorm/webdevops/toolbox:latest"
+          image-context: "docker/toolbox/${{ matrix.flavor }}"
+          image-tags: "ghcr.io/cocoastorm/webdevops/toolbox:${{ matrix.flavor }}"
 
   generate-matrix:
     runs-on: ubuntu-latest
