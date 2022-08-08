@@ -1,0 +1,38 @@
+#!/bin/sh
+
+set -e
+
+ARCH_FILE="/opt/docker/ARCH_INFO.txt"
+GO_REPLACE="/usr/local/bin/go-replace"
+
+if [ -f "$ARCH_FILE" ]; then
+    while IFS="=" read -r key value; do
+        case "$key" in
+          "BUILDARCH") BUILDARCH="$value" ;;
+          "TARGETARCH") TARGETARCH="$value" ;;
+        esac
+      done < "$ARCH_FILE"
+
+    # remove arch info file
+    rm -f -- "$ARCH_FILE"
+else
+    echo "WARNING: arch file not found, symlinking to amd64"
+fi
+
+symlinkBinary() {
+    symlink_target="/usr/local/bin/go-replace-$1"
+
+    if [ ! -f "$symlink_target" ]; then
+        echo "error: $symlink_target not found"
+        exit 2
+    fi
+
+    rm -f -- "$GO_REPLACE"
+    ln -sf "$GO_REPLACE" "/usr/local/bin/go-replace-$1"
+}
+
+if [ -n "$TARGETARCH" ]; then
+    symlinkBinary "amd64"
+else
+    symlinkBinary "$TARGETARCH"
+fi

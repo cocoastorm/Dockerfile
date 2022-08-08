@@ -8,6 +8,9 @@ provision:
   base-app:
     configuration:
       base-app/general: '*'
+  base-layout:
+    configuration:
+      base-layout/general: '*'
   apache:
     configuration:
       apache/general    : '*'
