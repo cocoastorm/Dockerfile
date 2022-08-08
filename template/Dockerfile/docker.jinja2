@@ -19,6 +19,7 @@ FROM {{ image }}:{{ tag }}
 {%- endmacro %}
 
 {% macro platformArgs() -%}
+ARG BUILDARCH
 ARG TARGETARCH
 {%- endmacro %}
 
