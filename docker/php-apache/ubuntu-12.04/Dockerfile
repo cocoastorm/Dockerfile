@@ -32,7 +32,6 @@ RUN set -x \
     && mkdir -p /var/lock/apache2 \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    && symlink-go-replace \
     && docker-image-cleanup
 
 EXPOSE 80 443

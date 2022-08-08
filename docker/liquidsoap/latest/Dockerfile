@@ -17,7 +17,6 @@ RUN /usr/local/bin/apt-install \
         gstreamer1.0-plugins-good \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    && symlink-go-replace \
     && docker-image-cleanup
 
 ENV LIQUIDSOAP_USER            "liquidsoap"

@@ -67,7 +67,6 @@ RUN set -x \
     && docker-service enable cron \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    && symlink-go-replace \
     && docker-image-cleanup
 
 EXPOSE 9000

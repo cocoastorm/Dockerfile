@@ -32,7 +32,7 @@ RUN set -x \
 
 RUN set -x \
     {{ php.officialAlpine(version='8.0') }} \
-    {{ provision.runBootstrap() }} \
+    {{ provision.symlinkGoReplace() }} \
     {{ docker.cleanup() }}
 
 {{ docker.workdir('/') }}

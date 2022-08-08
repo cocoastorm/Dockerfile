@@ -16,7 +16,6 @@ RUN set -x \
      \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    && symlink-go-replace \
     && docker-image-cleanup
 
 EXPOSE 80 443

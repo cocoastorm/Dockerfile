@@ -1,0 +1,44 @@
+#!/bin/sh
+
+set -e
+
+VERSION="1.1.2"
+INSTALL_DIR="/usr/local/bin"
+
+install() {
+    ARCH="$1"
+
+    case "$1" in \
+        amd64) GR_ARCH='64';; \
+        arm64) GR_ARCH='arm64';; \
+        *) echo 'defaulting to amd64'; ARCH="amd64"; GR_ARCH='64' ;; \
+    esac
+
+    BIN_FMT="go-replace-$ARCH"
+
+    if [ -f "$INSTALL_DIR/$BIN_FMT" ]; then
+        echo "go-replace-$ARCH exists"
+        return
+    fi
+
+    echo "downloading go-replace-$GR_ARCH"
+    wget -O "$INSTALL_DIR/$BIN_FMT" "https://github.com/webdevops/goreplace/releases/download/$VERSION/gr-$GR_ARCH-linux"
+    chmod +x "$INSTALL_DIR/$BIN_FMT"
+}
+
+if [ "$#" -eq 0 ]; then
+    echo "usage: $0 <ARCH>"
+    echo ""
+    echo "ARCH) either amd64 or arm64 or all"
+    exit 2
+fi
+
+if [ "$1" == "all" ]; then
+    for target in "amd64 arm64"
+    do
+        install "$target"
+    done
+else
+    echo "$1"
+    install "$1"
+fi

@@ -56,5 +56,4 @@ RUN set -x \
     && /usr/local/bin/generate-dockerimage-info \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    && symlink-go-replace \
     && docker-image-cleanup

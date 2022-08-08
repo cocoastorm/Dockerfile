@@ -28,7 +28,6 @@ RUN set -x \
         ' /etc/httpd/conf/httpd.conf /etc/httpd/conf.d/ssl.conf \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    && symlink-go-replace \
     && docker-image-cleanup
 
 EXPOSE 80 443

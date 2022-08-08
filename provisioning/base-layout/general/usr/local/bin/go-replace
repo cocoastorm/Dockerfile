@@ -9,16 +9,7 @@ if command -v dpkg > /dev/null; then
 fi
 
 download() {
-    case "$1" in \
-        amd64) GR_ARCH='64';; \
-        arm64) GR_ARCH='arm64';; \
-        *) echo "unsupported architecture"; exit 1 ;; \
-    esac
-
-    ARCH=$1
-    echo "downloading go-replace-$GR_ARCH"
-    wget -O "/usr/local/bin/go-replace-$ARCH" "https://github.com/webdevops/goreplace/releases/download/$VERSION/gr-$GR_ARCH-linux"
-    chmod +x "/usr/local/bin/go-replace-$ARCH"
+    /usr/local/bin/install-go-replace "$1"
 }
 
 if [ -f "/opt/docker/ARCH_INFO.txt" ]; then
@@ -31,7 +22,7 @@ if [ -f "/opt/docker/ARCH_INFO.txt" ]; then
       done < "$ARCH_FILE"
 fi
 
-if ! [ -n "$BUILDARCH" ]; then
+if [ ! -n "$BUILDARCH" ]; then
     if ! command -v dpkg > /dev/null; then
         echo "dpkg not installed and BUILDARCH was not found"
         exit 2

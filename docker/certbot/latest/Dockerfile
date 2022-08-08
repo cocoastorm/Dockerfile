@@ -24,5 +24,4 @@ RUN set -x \
     && pip install certbot \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    && symlink-go-replace \
     && docker-image-cleanup

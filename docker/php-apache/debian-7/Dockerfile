@@ -31,11 +31,9 @@ RUN set -x \
     && a2enmod actions fastcgi ssl rewrite headers expires \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    && symlink-go-replace \
     && docker-image-cleanup \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    && symlink-go-replace \
     && docker-image-cleanup
 
 EXPOSE 80 443

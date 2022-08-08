@@ -19,19 +19,24 @@ else
     echo "WARNING: arch file not found, symlinking to amd64"
 fi
 
+download() {
+    /usr/local/bin/install-go-replace "$1"
+}
+
 symlinkBinary() {
     symlink_target="/usr/local/bin/go-replace-$1"
 
     if [ ! -f "$symlink_target" ]; then
-        echo "error: $symlink_target not found"
+        echo "$symlink_target not found, attempting to install:"
+        download "$1"
         exit 2
     fi
 
     rm -f -- "$GO_REPLACE"
-    ln -sf "$GO_REPLACE" "/usr/local/bin/go-replace-$1"
+    ln -sf "/usr/local/bin/go-replace-$1" "$GO_REPLACE"
 }
 
-if [ -n "$TARGETARCH" ]; then
+if [ ! -n "$TARGETARCH" ]; then
     symlinkBinary "amd64"
 else
     symlinkBinary "$TARGETARCH"

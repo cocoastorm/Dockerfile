@@ -22,7 +22,6 @@ RUN set -x \
     && docker-service enable dovecot \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    && symlink-go-replace \
     && docker-image-cleanup
 
 RUN set -x \

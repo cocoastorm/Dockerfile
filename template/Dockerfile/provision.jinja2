@@ -5,6 +5,10 @@
     \{%- endif %}
     && /opt/docker/bin/bootstrap.sh{% endmacro %}
 
+{% macro symlinkGoReplace() -%}
+&& symlink-go-replace
+{%- endmacro %}
+
 {% macro runBootstrap() -%}
 && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap

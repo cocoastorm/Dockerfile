@@ -37,5 +37,4 @@ RUN set -x \
     && pip install t3targets \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    && symlink-go-replace \
     && docker-image-cleanup

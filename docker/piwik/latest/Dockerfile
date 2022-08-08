@@ -23,7 +23,6 @@ RUN set -x \
     && find /app/ -type f -exec chmod 0644 {} \; \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    && symlink-go-replace \
     && docker-image-cleanup
 
 VOLUME /app

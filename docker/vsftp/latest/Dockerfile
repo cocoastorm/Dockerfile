@@ -26,7 +26,6 @@ RUN set -x \
             /var/log/supervisor \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    && symlink-go-replace \
     && docker-image-cleanup
 
 EXPOSE 20 21 12020 12021 12022 12023 12024 12025

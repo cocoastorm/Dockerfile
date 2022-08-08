@@ -32,5 +32,4 @@ RUN set -x \
     && apk del python-dev \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    && symlink-go-replace \
     && docker-image-cleanup

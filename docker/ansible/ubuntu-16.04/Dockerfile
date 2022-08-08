@@ -33,5 +33,4 @@ RUN set -x \
         libffi-dev \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    && symlink-go-replace \
     && docker-image-cleanup

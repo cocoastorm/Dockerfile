@@ -25,5 +25,4 @@ RUN set -x \
     && docker-service enable ssh \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    && symlink-go-replace \
     && docker-image-cleanup

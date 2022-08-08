@@ -62,7 +62,6 @@ RUN apt-update \
     && chown -R solr:solr /opt/solr/server/solr \
     && chmod 755 /opt/solr/server/solr \
     && rm -rf /tmp/solr \
-    && symlink-go-replace \
     && docker-image-cleanup
 
 USER solr

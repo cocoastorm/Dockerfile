@@ -15,7 +15,6 @@ RUN set -x \
     && docker-service enable postfix \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    && symlink-go-replace \
     && docker-image-cleanup
 
 EXPOSE 25 465 587

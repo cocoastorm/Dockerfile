@@ -24,7 +24,6 @@ RUN set -x \
         varnish \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    && symlink-go-replace \
     && docker-image-cleanup
 
 CMD ["varnishd"]
