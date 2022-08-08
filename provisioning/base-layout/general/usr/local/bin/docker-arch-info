@@ -1,0 +1,38 @@
+#!/bin/sh
+
+set -e
+
+FILE="/opt/docker/ARCH_INFO.txt"
+
+printUsage() {
+    echo "Usage $0 <BUILDARCH> <TARGETARCH>"
+    echo ""
+    echo "BUILDARCH" "architecture of docker host/builder"
+    echo "TARGETARCH" "architecture of the final docker image"
+    echo ""
+
+    exit 1
+}
+
+if [ $# -eq 0 ] || [ $# -gt 2 ]; then
+    printUsage
+    exit 2
+fi
+
+if [ $# -eq 1 ]; then
+    BUILDARCH="$(dpkg --print-architecture | awk -F- '{ print $NF }')"
+    TARGETARCH="$2"
+fi
+
+if [ $# -eq 2 ]; then
+    BUILDARCH="$1"
+    TARGETARCH="$2"
+fi
+
+mkdir -p "$(dirname $FILE)"
+echo "storing to $FILE"
+
+{
+    echo "BUILDARCH=${BUILDARCH}"; \
+    echo "TARGETARCH=${TARGETARCH}"; \
+} > $FILE

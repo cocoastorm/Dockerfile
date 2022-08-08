@@ -2,23 +2,52 @@
 
 set -e
 
-ARCH=$(dpkg --print-architecture | awk -F- '{ print $NF }')
 VERSION="1.1.2"
 
-case "$ARCH" in \
-    amd64) GR_ARCH='64';; \
-    arm64) GR_ARCH='arm64';; \
-    *) echo "unsupported architecture"; exit 1 ;; \
-esac
+if command -v dpkg > /dev/null; then
+    ARCH="$(dpkg --print-architecture | awk -F- '{ print $NF }')"
+fi
 
-downloadGoReplace() {
+download() {
+    case "$1" in \
+        amd64) GR_ARCH='64';; \
+        arm64) GR_ARCH='arm64';; \
+        *) echo "unsupported architecture"; exit 1 ;; \
+    esac
+
+    ARCH=$1
     echo "downloading go-replace-$GR_ARCH"
     wget -O "/usr/local/bin/go-replace-$ARCH" "https://github.com/webdevops/goreplace/releases/download/$VERSION/gr-$GR_ARCH-linux"
     chmod +x "/usr/local/bin/go-replace-$ARCH"
 }
 
-if [ ! -x "/usr/local/bin/go-replace-$ARCH" ]; then
-    downloadGoReplace
+if [ -f "/opt/docker/ARCH_INFO.txt" ]; then
+    ARCH_FILE="/opt/docker/ARCH_INFO.txt"
+    while IFS="=" read -r key value; do
+        case "$key" in
+          "BUILDARCH") BUILDARCH="$value" ;;
+          "TARGETARCH") TARGETARCH="$value" ;;
+        esac
+      done < "$ARCH_FILE"
 fi
 
-exec "/usr/local/bin/go-replace-$ARCH" $@
+if ! [ -n "$BUILDARCH" ]; then
+    if ! command -v dpkg > /dev/null; then
+        echo "dpkg not installed and BUILDARCH was not found"
+        exit 2
+    fi
+
+    BUILDARCH="$ARCH"
+fi
+
+for TARGET in "$BUILDARCH" "$TARGETARCH"; do
+    if [ -n "$TARGET" ] && [ ! -x "/usr/local/bin/go-replace-$TARGET" ]; then
+        download "$TARGET"
+    fi
+done
+
+if [ -n "$BUILDARCH" ]; then
+    exec "/usr/local/bin/go-replace-$BUILDARCH" "$@"
+else
+    exec "/usr/local/bin/go-replace-$ARCH" "$@"
+fi
