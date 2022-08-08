@@ -20,6 +20,7 @@ jobs:
         uses: './.github/actions/composite-docker'
         with:
           registry-user: ${{ github.repository_owner }}
+          registry-secret: ${{ secrets.GITHUB_TOKEN }}
           image-name: "webdevops/base-layout"
           image-context: "docker/base-layout/latest"
           image-tags: "ghcr.io/cocoastorm/webdevops/base-layout:latest"
