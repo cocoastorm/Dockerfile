@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM --platform=$BUILDPLATFORM webdevops/php-nginx:5.6
+FROM webdevops/php-nginx:5.6
 
 ARG BUILDARCH
 ARG TARGETARCH

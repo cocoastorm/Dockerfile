@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/apache:alpine
+FROM ghcr.io/cocoastorm/webdevops/apache:alpine
 
 ARG BUILDARCH
 ARG TARGETARCH

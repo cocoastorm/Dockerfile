@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM --platform=$BUILDPLATFORM alpine:latest
+FROM alpine:latest
 
 ARG BUILDARCH
 ARG TARGETARCH

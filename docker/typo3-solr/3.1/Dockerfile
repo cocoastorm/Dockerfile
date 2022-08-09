@@ -5,7 +5,7 @@
 
 
 # staged baselayout builder
-FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/toolbox:alpine AS base
+FROM ghcr.io/cocoastorm/webdevops/toolbox:alpine AS base
 
 ARG BUILDARCH
 ARG TARGETARCH
@@ -29,7 +29,7 @@ RUN set -eux \
         rm -rf "$GNUPGHOME"; \
         chmod +x "/baselayout/sbin/gosu";
 
-FROM --platform=$BUILDPLATFORM guywithnose/solr:4.10.4
+FROM guywithnose/solr:4.10.4
 
 ARG BUILDARCH
 ARG TARGETARCH

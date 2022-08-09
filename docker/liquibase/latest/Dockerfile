@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM --platform=$BUILDPLATFORM openjdk:8
+FROM openjdk:8
 
 ARG BUILDARCH
 ARG TARGETARCH

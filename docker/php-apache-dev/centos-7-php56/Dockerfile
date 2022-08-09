@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM --platform=$BUILDPLATFORM webdevops/php-apache:centos-7-php56
+FROM webdevops/php-apache:centos-7-php56
 
 ARG BUILDARCH
 ARG TARGETARCH

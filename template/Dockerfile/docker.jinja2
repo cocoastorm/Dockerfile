@@ -1,17 +1,9 @@
-{% macro from(image, tag="latest", user="webdevops", platform=True) -%}
-{% if platform -%}
-FROM --platform=$BUILDPLATFORM {{ user }}/{{ image }}:{{ tag }}
-{%- else -%}
+{% macro from(image, tag="latest", user="webdevops") -%}
 FROM {{ user }}/{{ image }}:{{ tag }}
-{%- endif %}
 {%- endmacro %}
 
-{% macro fromOfficial(image, tag="latest", platform=True) -%}
-{% if platform -%}
-FROM --platform=$BUILDPLATFORM {{ image }}:{{ tag }}
-{%- else -%}
+{% macro fromOfficial(image, tag="latest") -%}
 FROM {{ image }}:{{ tag }}
-{%- endif %}
 {%- endmacro %}
 
 {% macro image(name, tag="latest", user="webdevops") -%}

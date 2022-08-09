@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM --platform=$BUILDPLATFORM debian:buster-slim
+FROM debian:buster-slim
 
 ARG BUILDARCH
 ARG TARGETARCH

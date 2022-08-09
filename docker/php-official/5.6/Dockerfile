@@ -5,7 +5,7 @@
 
 
 # staged baselayout builder
-FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/toolbox:alpine AS base
+FROM ghcr.io/cocoastorm/webdevops/toolbox:alpine AS base
 
 ARG BUILDARCH
 ARG TARGETARCH
@@ -29,7 +29,7 @@ RUN set -eux \
         rm -rf "$GNUPGHOME"; \
         chmod +x "/baselayout/sbin/gosu";
 
-FROM --platform=$BUILDPLATFORM php:5.6-fpm-stretch
+FROM php:5.6-fpm-stretch
 
 ARG BUILDARCH
 ARG TARGETARCH

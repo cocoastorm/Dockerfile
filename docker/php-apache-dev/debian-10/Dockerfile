@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM --platform=$BUILDPLATFORM webdevops/php-apache:debian-10
+FROM webdevops/php-apache:debian-10
 
 ARG BUILDARCH
 ARG TARGETARCH

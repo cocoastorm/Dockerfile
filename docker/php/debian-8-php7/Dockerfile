@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM --platform=$BUILDPLATFORM webdevops/base-app:debian-8
+FROM webdevops/base-app:debian-8
 
 ARG BUILDARCH
 ARG TARGETARCH

@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/php:5.6
+FROM ghcr.io/cocoastorm/webdevops/php:5.6
 
 ARG BUILDARCH
 ARG TARGETARCH

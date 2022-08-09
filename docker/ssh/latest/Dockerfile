@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM --platform=$BUILDPLATFORM webdevops/base-app:latest
+FROM webdevops/base-app:latest
 
 ARG BUILDARCH
 ARG TARGETARCH

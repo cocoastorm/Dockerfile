@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM --platform=$BUILDPLATFORM webdevops/base-app:centos-7
+FROM webdevops/base-app:centos-7
 
 ARG BUILDARCH
 ARG TARGETARCH

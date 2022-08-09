@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/nginx:ubuntu-16.04
+FROM ghcr.io/cocoastorm/webdevops/nginx:ubuntu-16.04
 
 ARG BUILDARCH
 ARG TARGETARCH

@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM --platform=$BUILDPLATFORM webdevops/php-apache:7.3-alpine
+FROM webdevops/php-apache:7.3-alpine
 
 ARG BUILDARCH
 ARG TARGETARCH

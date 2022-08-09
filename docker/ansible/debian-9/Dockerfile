@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM --platform=$BUILDPLATFORM ghcr.io/cocoastorm/webdevops/bootstrap:debian-9
+FROM ghcr.io/cocoastorm/webdevops/bootstrap:debian-9
 
 ARG BUILDARCH
 ARG TARGETARCH
