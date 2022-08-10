@@ -30,18 +30,25 @@ class GenerateDockerfileCommand(BaseCommand):
 
     generate:dockerfile
         {docker images?*         : Docker images (whitelist)}
+        {--o|output              : output directory}
         {--whitelist=?*          : image/tag whitelist }
         {--blacklist=?*          : image/tag blacklist }
     """
 
     template = ''
-
     template_header = '{% extends "Dockerfile/layout.jinja2" %}\n{% block content %}'
     template_footer = '{% endblock %}'
 
+    dockerfile_path = ''
+
     def run_task(self, configuration):
         template_path = configuration.get('templatePath')
+
         dockerfile_path = configuration.get('dockerPath')
+        self.dockerfile_path = dockerfile_path
+
+        output_dirpath = self.option("o")
+
         whitelist = self.get_whitelist()
         blacklist = self.get_blacklist()
 
@@ -71,19 +78,28 @@ class GenerateDockerfileCommand(BaseCommand):
         user_image_prefix = f"{image_user}/{image_prefix}" if image_user else image_prefix
         self.template.globals = {"user": user_image_prefix or 'webdevops'}
 
-        for file in DockerfileUtility.find_file_in_path(dockerfile_path=dockerfile_path, filename="Dockerfile.jinja2", whitelist=whitelist, blacklist=blacklist):
-                self.process_dockerfile(file)
+        if output_dirpath:
+            os.makedirs(output_dirpath, exist_ok=True)
 
-    def process_dockerfile(self, input_file):
+        for file in DockerfileUtility.find_file_in_path(dockerfile_path=dockerfile_path, filename="Dockerfile.jinja2", whitelist=whitelist, blacklist=blacklist):
+                self.process_dockerfile(file, output=output_dirpath)
+
+    def process_dockerfile(self, input_file, output=""):
         """
         :param input_file: Input File
         :type input_file: str
         """
-        output_file = os.path.splitext(input_file)
-        output_file = os.path.join(os.path.dirname(output_file[0]), os.path.basename(output_file[0]))
+        dockerfile = os.path.splitext(input_file)
+        dockerfile = os.path.join(os.path.dirname(dockerfile[0]), os.path.basename(dockerfile[0]))
 
-        docker_image = os.path.basename(os.path.dirname(os.path.dirname(output_file)))
-        docker_tag = os.path.basename(os.path.dirname(output_file))
+        if not output: 
+            output_file = dockerfile
+        else:
+            segment_name = os.path.relpath(dockerfile, self.dockerfile_path)
+            output_file = os.path.join(output, segment_name)
+
+        docker_image = os.path.basename(os.path.dirname(os.path.dirname(dockerfile)))
+        docker_tag = os.path.basename(os.path.dirname(dockerfile))
 
         context = {
             'Dockerfile': {
