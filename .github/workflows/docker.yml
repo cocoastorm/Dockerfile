@@ -108,4 +108,5 @@ jobs:
           image-name: ${{ matrix.name }}
           image-context: ${{ matrix.context }}
           image-tags: ${{ matrix.tags }}
+          image-pull: true
 

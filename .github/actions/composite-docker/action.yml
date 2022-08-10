@@ -25,6 +25,16 @@ inputs:
   image-tags:
     description: 'docker image tags'
     required: true
+
+  image-push:
+    description: 'push built images'
+    required: false
+    default: true
+
+  image-pull:
+    description: 'referenced docker images should be pulled first'
+    required: false
+    default: false
 runs:
   using: "composite"
   steps:
@@ -46,5 +56,6 @@ runs:
       with:
         context: ${{ inputs.image-context }}
         platforms: ${{ inputs.image-platforms }}
-        push: true
+        push: ${{ inputs.image-push }}
+        pull: ${{ inputs.image-pull }}
         tags: ${{ inputs.image-tags }}
