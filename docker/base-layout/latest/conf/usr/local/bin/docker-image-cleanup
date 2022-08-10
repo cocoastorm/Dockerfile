@@ -35,7 +35,3 @@ esac
 
 find /tmp/ /var/log/ -mindepth 1 -delete
 rm -rf /root/.cache
-
-if [ -f "/opt/docker/ARCH_INFO.txt" ]; then
-    rm -f -- /opt/docker/ARCH_INFO.txt
-fi
