@@ -31,7 +31,7 @@ from webdevops.command import BaseCommand
 
 class GenerateProvisionCommand(BaseCommand):
     """
-    Provisionning docker images
+    Provisioning docker images
 
     generate:provision
         {--image=?*              : filter on images name }
