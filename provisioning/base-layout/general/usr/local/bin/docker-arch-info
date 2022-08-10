@@ -2,7 +2,8 @@
 
 set -e
 
-FILE="/opt/docker/ARCH_INFO.txt"
+DOCKER_DIR="/opt/docker"
+ARCH_FILE="/opt/docker/ARCH_INFO"
 
 printUsage() {
     echo "Usage $0 <BUILDARCH> <TARGETARCH>"
@@ -14,25 +15,24 @@ printUsage() {
     exit 1
 }
 
-if [ $# -eq 0 ] || [ $# -gt 2 ]; then
+if [ $# -lt 1 ]; then
     printUsage
     exit 2
 fi
 
 if [ $# -eq 1 ]; then
-    BUILDARCH="$(dpkg --print-architecture | awk -F- '{ print $NF }')"
-    TARGETARCH="$2"
-fi
-
-if [ $# -eq 2 ]; then
+    TARGETARCH="$1"
+else
     BUILDARCH="$1"
     TARGETARCH="$2"
 fi
 
-mkdir -p "$(dirname $FILE)"
-echo "storing to $FILE"
+if [ ! -d "$DOCKER_DIR" ]; then
+    mkdir -p "$DOCKER_DIR"
+fi
 
+echo "storing to $ARCH_FILE"
 {
-    echo "BUILDARCH=${BUILDARCH}"; \
-    echo "TARGETARCH=${TARGETARCH}"; \
-} > $FILE
+    [ -n "$BUILDARCH" ] && echo "BUILDARCH=${BUILDARCH}"; \
+    [ -n "$TARGETARCH" ] && echo "TARGETARCH=${TARGETARCH}"; \
+} | tee $ARCH_FILE

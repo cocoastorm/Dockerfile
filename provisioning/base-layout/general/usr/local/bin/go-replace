@@ -2,6 +2,7 @@
 
 set -e
 
+ARCH_FILE="/opt/docker/ARCH_INFO"
 VERSION="1.1.2"
 
 if command -v dpkg > /dev/null; then
@@ -12,8 +13,7 @@ download() {
     /usr/local/bin/install-go-replace "$1"
 }
 
-if [ -f "/opt/docker/ARCH_INFO.txt" ]; then
-    ARCH_FILE="/opt/docker/ARCH_INFO.txt"
+if [ -f "/opt/docker/ARCH_INFO" ]; then
     while IFS="=" read -r key value; do
         case "$key" in
           "BUILDARCH") BUILDARCH="$value" ;;
@@ -22,13 +22,8 @@ if [ -f "/opt/docker/ARCH_INFO.txt" ]; then
       done < "$ARCH_FILE"
 fi
 
-if [ ! -n "$BUILDARCH" ]; then
-    if ! command -v dpkg > /dev/null; then
-        echo "dpkg not installed and BUILDARCH was not found"
-        exit 2
-    fi
-
-    BUILDARCH="$ARCH"
+if [ ! -n "$BUILDARCH" ] && [ -n "$ARCH" ]; then
+    echo "$BUILDARCH missing, using `dpkg --print-architecture` to determine"
 fi
 
 for TARGET in "$BUILDARCH" "$TARGETARCH"; do
@@ -38,7 +33,19 @@ for TARGET in "$BUILDARCH" "$TARGETARCH"; do
 done
 
 if [ -n "$BUILDARCH" ]; then
+    echo "go-replace-$BUILDARCH"
     exec "/usr/local/bin/go-replace-$BUILDARCH" "$@"
-else
+fi
+
+if [ -n "$TARGETARCH" ]; then
+    echo "go-replace-$TARGETARCH"
+    exec "/usr/local/bin/go-replace-$TARGETARCH" "$@"
+fi
+
+if [ -n "$ARCH" ]; then
+    echo "go-replace-$ARCH"
     exec "/usr/local/bin/go-replace-$ARCH" "$@"
+else
+    echo "no suitable ARCH found"
+    exit 2
 fi
