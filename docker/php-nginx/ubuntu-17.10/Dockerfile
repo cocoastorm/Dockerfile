@@ -24,6 +24,7 @@ RUN set -x \
         nginx \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
+    && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
 EXPOSE 80 443

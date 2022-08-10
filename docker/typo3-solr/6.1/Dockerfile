@@ -62,6 +62,7 @@ RUN apt-update \
     && chown -R solr:solr /opt/solr/server/solr \
     && chmod 755 /opt/solr/server/solr \
     && rm -rf /tmp/solr \
+    && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
 USER solr

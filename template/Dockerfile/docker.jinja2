@@ -56,5 +56,6 @@ CMD ["{{ command }}"]
 {%- endmacro -%}
 
 {%- macro cleanup() -%}
+    && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 {%- endmacro -%}

@@ -37,4 +37,5 @@ RUN set -x \
     && pip install t3targets \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
+    && docker-arch-info $TARGETARCH \
     && docker-image-cleanup

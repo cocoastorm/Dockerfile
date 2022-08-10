@@ -91,6 +91,7 @@ RUN set -x \
     && chmod +s /sbin/gosu \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
+    && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
 RUN set -x \
@@ -110,6 +111,7 @@ RUN set -x \
         git \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
+    && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
 RUN set -x \
@@ -258,7 +260,7 @@ RUN set -x \
     # Enable php services
     && docker-service enable syslog \
     && docker-service enable cron \
-    && symlink-go-replace \
+    && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
 WORKDIR /

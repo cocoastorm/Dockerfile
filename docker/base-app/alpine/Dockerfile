@@ -33,4 +33,5 @@ RUN set -x \
         git \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
+    && docker-arch-info $TARGETARCH \
     && docker-image-cleanup

@@ -61,4 +61,5 @@ RUN set -x \
     && /usr/local/bin/generate-dockerimage-info \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
+    && docker-arch-info $TARGETARCH \
     && docker-image-cleanup

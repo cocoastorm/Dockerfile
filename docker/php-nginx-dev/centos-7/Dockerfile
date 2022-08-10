@@ -37,4 +37,5 @@ RUN set -x \
     && docker-service enable ssh \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
+    && docker-arch-info $TARGETARCH \
     && docker-image-cleanup

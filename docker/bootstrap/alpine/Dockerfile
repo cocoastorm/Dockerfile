@@ -65,4 +65,5 @@ RUN set -x \
     && echo 'auth sufficient pam_rootok.so' >> /etc/pam.d/su \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
+    && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
