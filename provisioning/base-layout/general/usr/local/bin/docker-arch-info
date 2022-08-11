@@ -21,6 +21,7 @@ if [ $# -lt 1 ]; then
 fi
 
 if [ $# -eq 1 ]; then
+    unset BUILDARCH
     TARGETARCH="$1"
 else
     BUILDARCH="$1"
