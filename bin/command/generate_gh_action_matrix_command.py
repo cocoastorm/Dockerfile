@@ -6,6 +6,7 @@ import os
 import sys
 from cleo import Output
 from webdevops import DockerfileUtility
+from webdevops.DockerfileFilter import MatrixBuilder
 from webdevops.command import BaseCommand
 
 class GenerateGHActionMatrixCommand(BaseCommand):
@@ -65,52 +66,47 @@ class GenerateGHActionMatrixCommand(BaseCommand):
             whitelist=whitelist, blacklist=blacklist,
         )
 
-        dockerfile_blocks = [self.process_dockerfile(file) for file in dockerfiles]
-
-        base_img_blocks = []
-        needs_dep_img_blocks = []
-
-        for block in dockerfile_blocks:
-            block_input = block['input']
-            dockerfile_input = os.path.splitext(block_input)[0]
-
-            from_img = DockerfileUtility.parse_dockerfile_from_statement(dockerfile_input)
-
-            if image_prefix in from_img:
-                needs_dep_img_blocks.append(block)
-            else:
-                base_img_blocks.append(block)
-
-        # base images
-        base_images = []
-        for base_img in base_img_blocks:
-            base_images.append(base_img)
-
-            # toolbox should be first :tm:
-            if "toolbox" in base_img["name"]:
-                base_images.insert(0, base_images.pop(base_images.index(base_img)))
-
-        # images with parent image from "webdevops"
-        # /shrug
+        matrix = MatrixBuilder(dockerfiles)
+        matrix.build()
+        # matrix.printGraph(self.line)
 
         output_path = os.path.split(dockerfile_path)[0]
-        output_base_file = os.path.join(output_path, 'gh_matrix-base-images.json')
-        output_multi_file = os.path.join(output_path, 'gh_matrix-multi-images.json')
 
         # matrix: base images
+        base_images = [self.process_dockerfile(file) for file in matrix.get_base_images()]
+        output_base_file = os.path.join(output_path, 'gh_matrix-base-images.json')
+
         self.line("\n\n")
         base_matrix = self.fmt_github_output("matrix-base", json.dumps(base_images))
         print(base_matrix)
-
         self.line("\n\n")
-        multi_matrix = self.fmt_github_output("matrix-multi", json.dumps(needs_dep_img_blocks))
-        print(multi_matrix)
 
         with open(output_base_file, 'w') as f:
             json.dump(base_images, f, indent=2)
 
-        with open(output_multi_file, 'w') as fm:
-            json.dump(needs_dep_img_blocks, fm, indent=2)
+        # matrix: multiservice images
+        multiservice_images = [self.process_dockerfile(file) for file in matrix.get_multiservice_images()]
+        output_multiservice_file = os.path.join(output_path, 'gh_matrix-multiservice-images.json')
+
+        self.line("\n\n")
+        multi_matrix = self.fmt_github_output("matrix-multi", json.dumps(multiservice_images))
+        print(multi_matrix)
+        self.line("\n\n")
+
+        with open(output_multiservice_file, 'w') as fm:
+            json.dump(multiservice_images, fm, indent=2)
+
+        # matrix: development images
+        development_images = [self.process_dockerfile(file) for file in matrix.get_development_images()]
+        output_development_file = os.path.join(output_path, 'gh_matrix-development-images.json')
+
+        self.line("\n\n")
+        dev_matrix = self.fmt_github_output("matrix-dev", json.dumps(development_images))
+        print(dev_matrix)
+        self.line("\n\n")
+
+        with open(output_development_file, 'w') as fd:
+            json.dump(development_images, fd, indent=2)
 
     def fmt_github_output(self, name, output):
         text = output
