@@ -1,4 +1,4 @@
-name: 'Docker Composite Build'
+name: Docker Build
 description: 'qemu + buildx + ghcr.io login + docker-build-push'
 inputs:
   registry-user:

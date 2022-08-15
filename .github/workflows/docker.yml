@@ -5,6 +5,7 @@ on:
     branches:
       - 'main'
       - 'experimental/gh-actions'
+      - 'experimental/some-dependency-tracking'
 
 concurrency:
   group: "${{ github.ref }}"
@@ -49,6 +50,7 @@ jobs:
     outputs:
       base: ${{ steps.generate-matrix.outputs.matrix-base }}
       multi: ${{ steps.generate-matrix.outputs.matrix-multi }}
+      dev: ${{ steps.generate-matrix.outputs.matrix-dev }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -66,7 +68,6 @@ jobs:
   
   build-base-images:
     needs:
-      - build-toolbox-image
       - generate-matrix
     runs-on: ubuntu-latest
     strategy:
@@ -77,7 +78,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
 
-      - name: Docker Build Composite
+      - name: Build "${{ matrix.name }}"
         uses: ./.github/actions/composite-docker
         with:
           registry-user: ${{ github.repository_owner }}
@@ -89,7 +90,6 @@ jobs:
   build-multi-images:
     needs:
       - generate-matrix
-      - build-toolbox-image
       - build-base-images
     runs-on: ubuntu-latest
     strategy:
@@ -100,7 +100,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Docker Build Composite
+      - name: Build "${{ matrix.name }}"
         uses: ./.github/actions/composite-docker
         with:
           registry-user: ${{ github.repository_owner }}
@@ -108,5 +108,25 @@ jobs:
           image-name: ${{ matrix.name }}
           image-context: ${{ matrix.context }}
           image-tags: ${{ matrix.tags }}
-          image-pull: true
 
+  build-dev-images:
+    needs:
+      - generate-matrix
+      - build-multi-images
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 2
+      matrix:
+        include: ${{ fromJson(needs.generate-matrix.outputs.dev) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build ${{ matrix.name }}
+        uses: ./.github/actions/composite-docker
+        with:
+          registry-user: ${{ github.repository_owner }}
+          registry-secret: ${{ secrets.GITHUB_TOKEN }}
+          image-name: ${{ matrix.name }}
+          image-context: ${{ matrix.context }}
+          image-tags: ${{ matrix.tags }}
