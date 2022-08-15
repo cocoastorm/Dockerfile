@@ -69,6 +69,7 @@ jobs:
   build-base-images:
     needs:
       - generate-matrix
+      - build-toolbox-image
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 2
