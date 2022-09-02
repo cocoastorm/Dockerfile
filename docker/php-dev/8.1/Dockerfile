@@ -15,5 +15,8 @@ RUN set -x \
     && docker-service enable syslog \
     && docker-service enable postfix \
     && docker-service enable ssh \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    
+    && docker-arch-info $TARGETARCH \
     && docker-image-cleanup

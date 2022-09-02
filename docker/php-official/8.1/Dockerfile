@@ -26,10 +26,8 @@ ENV PHP_SENDMAIL_PATH="/usr/sbin/sendmail -t -i"
 ENV COMPOSER_VERSION="2"
 
 
-# Baselayout copy (from staged image)
-COPY --from=webdevops/toolbox /baselayout/sbin/* /sbin/
-COPY --from=webdevops/toolbox /baselayout/usr/local/bin/* /usr/local/bin/
-
+# base copy (from staged image)
+COPY --from=base /baselayout /
 
 COPY conf/ /opt/docker/
 
@@ -60,7 +58,10 @@ RUN set -x \
         net-tools \
         tzdata \
     && chmod +s /sbin/gosu \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    
+    && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
 RUN set -x \
@@ -77,7 +78,10 @@ RUN set -x \
         git \
         patch \
     && /usr/local/bin/generate-locales \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    
+    && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
 RUN set -x \
@@ -142,12 +146,11 @@ RUN set -x \
     && git clone --branch master --depth 1 https://github.com/php-amqp/php-amqp.git /usr/src/php/ext/amqp \
     && cd /usr/src/php/ext/amqp && git submodule update --init \
     && git clone --branch master --depth 1 https://github.com/Imagick/imagick.git /usr/src/php/ext/imagick \
-    && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
     && PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
     && docker-php-ext-install \
         bcmath \
         amqp \
-        imagick \
+        imagick \        
         bz2 \
         calendar \
         exif \
@@ -209,7 +212,10 @@ RUN set -x \
     # Enable php services
     && docker-service enable syslog \
     && docker-service enable cron \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    
+    && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
 WORKDIR /

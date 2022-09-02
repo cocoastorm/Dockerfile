@@ -19,7 +19,10 @@ RUN set -x \
     # Install nginx
     && apk-install \
         nginx \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    
+    && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
 EXPOSE 80 443

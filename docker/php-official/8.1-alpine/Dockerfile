@@ -27,10 +27,8 @@ ENV LD_PRELOAD="/usr/lib/preloadable_libiconv.so"
 ENV COMPOSER_VERSION="2"
 
 
-# Baselayout copy (from staged image)
-COPY --from=webdevops/toolbox /baselayout/sbin/* /sbin/
-COPY --from=webdevops/toolbox /baselayout/usr/local/bin/* /usr/local/bin/
-
+# base copy (from staged image)
+COPY --from=base /baselayout /
 
 COPY conf/ /opt/docker/
 
@@ -63,11 +61,16 @@ RUN set -x \
         tzdata \
         busybox-suid \
     && chmod +s /sbin/gosu \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    
+    && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
 RUN set -x \
-    && apk-install shadow \
+    && apk-install \
+        dpkg \
+        shadow \
     && apk-install \
         # Install common tools
         zip \
@@ -79,7 +82,10 @@ RUN set -x \
         rsync \
         patch \
         git \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    
+    && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
 RUN set -x \
@@ -144,10 +150,6 @@ RUN set -x \
     # Install extensions
     && PKG_CONFIG_PATH=/usr/local docker-php-ext-configure intl \
     && docker-php-ext-configure gd --with-jpeg --with-freetype --with-webp \
-    && git clone --branch master --depth 1 https://github.com/Imagick/imagick.git /usr/src/php/ext/imagick \
-    && git clone --branch master --depth 1 https://github.com/php-amqp/php-amqp.git /usr/src/php/ext/amqp \
-    && cd /usr/src/php/ext/amqp && git submodule update --init \
-    && docker-php-ext-configure ldap \
     && PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
     && docker-php-ext-install \
         bcmath \
@@ -155,8 +157,6 @@ RUN set -x \
         calendar \
         exif \
         ffi \
-        imagick \
-        amqp \
         intl \
         gettext \
         ldap \
@@ -189,7 +189,6 @@ RUN set -x \
     && pecl install yaml \
     && pecl install redis \
     && pecl install mongodb \
-    && pecl install xmlrpc-1.0.0RC3 \
     && docker-php-ext-enable \
         apcu \
         vips \
@@ -198,6 +197,7 @@ RUN set -x \
         xmlrpc \
         imagick \
         mongodb \
+        #amqp \
     # Uninstall dev and header packages
     && apk del -f --purge \
         autoconf \
@@ -232,7 +232,10 @@ RUN set -x \
     # Enable php services
     && docker-service enable syslog \
     && docker-service enable cron \
-    && docker-run-bootstrap \
+    && docker-arch-info $BUILDARCH $TARGETARCH \
+&& docker-run-bootstrap \
+    
+    && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
 WORKDIR /

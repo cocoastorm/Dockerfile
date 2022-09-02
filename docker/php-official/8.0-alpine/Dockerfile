@@ -91,6 +91,7 @@ RUN set -x \
     && chmod +s /sbin/gosu \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
+    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
@@ -111,6 +112,7 @@ RUN set -x \
         git \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
+    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
@@ -216,15 +218,14 @@ RUN set -x \
     && pecl install yaml \
     && pecl install redis \
     && pecl install mongodb \
-    #&& pecl install imagick \
-    #&& pecl install amqp \
     && pecl install xmlrpc-1.0.0RC3 \
     && docker-php-ext-enable \
         apcu \
         vips \
         yaml \
         redis \
-        #imagick \
+        xmlrpc \
+        imagick \
         mongodb \
         #amqp \
     # Uninstall dev and header packages
@@ -261,6 +262,7 @@ RUN set -x \
     # Enable php services
     && docker-service enable syslog \
     && docker-service enable cron \
+    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
