@@ -27,8 +27,9 @@ ENV LD_PRELOAD="/usr/lib/preloadable_libiconv.so"
 ENV COMPOSER_VERSION="2"
 
 
-# base copy (from staged image)
-COPY --from=base /baselayout /
+# Baselayout copy (from staged image)
+COPY --from=FROM ghcr.io/cocoastorm/webdevops/toolbox:alpine /baselayout/sbin/* /sbin/
+COPY --from=FROM ghcr.io/cocoastorm/webdevops/toolbox:alpine /baselayout/usr/local/bin/* /usr/local/bin/
 
 COPY conf/ /opt/docker/
 

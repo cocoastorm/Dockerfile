@@ -10,7 +10,7 @@
 {{ environment.phpAlpineIconvWorkaround() }}
 {{ environment.phpComposerVersion() }}
 
-{{ baselayout.copy() }}
+{{ baselayout.copy("alpine") }}
 
 {{ docker.copy('conf/', '/opt/docker/') }}
 
