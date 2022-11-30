@@ -66,9 +66,8 @@ class GenerateGHActionMatrixCommand(BaseCommand):
             whitelist=whitelist, blacklist=blacklist,
         )
 
-        matrix = MatrixBuilder(dockerfiles)
+        matrix = MatrixBuilder(dockerfiles, user_image_prefix)
         matrix.build()
-        # matrix.printGraph(self.line)
 
         output_path = os.path.split(dockerfile_path)[0]
 
