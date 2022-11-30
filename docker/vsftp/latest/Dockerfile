@@ -26,6 +26,7 @@ RUN set -x \
             /var/log/supervisor \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
+    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 

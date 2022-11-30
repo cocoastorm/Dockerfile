@@ -88,6 +88,7 @@ RUN set -x \
     && chmod +s /sbin/gosu \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
+    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
@@ -107,6 +108,7 @@ RUN set -x \
     && /usr/local/bin/generate-locales \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
+    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
@@ -169,6 +171,7 @@ RUN set -x \
     # Install extensions
     && PKG_CONFIG_PATH=/usr/local docker-php-ext-configure intl \
     && docker-php-ext-configure gd --with-jpeg --with-freetype --with-webp \
+    && docker-php-ext-configure ldap \
     && PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
     && docker-php-ext-install \
         bcmath \        
@@ -241,6 +244,7 @@ RUN set -x \
     && docker-service enable cron \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
+    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 

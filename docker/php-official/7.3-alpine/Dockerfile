@@ -91,6 +91,7 @@ RUN set -x \
     && chmod +s /sbin/gosu \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
+    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
@@ -111,6 +112,7 @@ RUN set -x \
         git \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
+    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
@@ -176,6 +178,7 @@ RUN set -x \
     # Install extensions
     && docker-php-ext-configure intl --with-icu-dir=/usr/local \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-webp-dir=/usr/include/ \
+    && docker-php-ext-configure ldap \
     && PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
     && docker-php-ext-install \
         bcmath \
@@ -219,11 +222,11 @@ RUN set -x \
     && pecl install mongodb \
     && pecl install imagick \
     && pecl install amqp \
+    
     && pecl install yaml \
     && docker-php-ext-enable \
         apcu \
         redis \
-        imagick \
         mongodb \
         amqp \
         vips \
@@ -264,6 +267,7 @@ RUN set -x \
     && docker-service enable cron \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
+    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 

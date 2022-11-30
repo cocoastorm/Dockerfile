@@ -31,6 +31,7 @@ RUN set -x \
     && mkdir -p /var/lock/apache2 \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
+    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 

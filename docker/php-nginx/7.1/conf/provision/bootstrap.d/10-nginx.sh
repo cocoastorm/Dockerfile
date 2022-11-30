@@ -18,6 +18,7 @@ if [ ! -d /etc/nginx/conf.d ]; then
 fi
 
 # Enable nginx main config
+mkdir -p /etc/nginx/conf.d/
 ln -sf /opt/docker/etc/nginx/main.conf /etc/nginx/conf.d/10-docker.conf
 
 rm -f \

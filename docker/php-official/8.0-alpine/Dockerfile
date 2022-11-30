@@ -178,6 +178,10 @@ RUN set -x \
     # Install extensions
     && PKG_CONFIG_PATH=/usr/local docker-php-ext-configure intl \
     && docker-php-ext-configure gd --with-jpeg --with-freetype --with-webp \
+    && git clone --branch 3.7.0 --depth 1 https://github.com/Imagick/imagick.git /usr/src/php/ext/imagick \
+    && git clone --branch v1.11.0 --depth 1 https://github.com/php-amqplib/php-amqplib.git  /usr/src/php/ext/amqp \
+    && cd /usr/src/php/ext/amqp && git submodule update --init \
+    && docker-php-ext-configure ldap \
     && PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
     && docker-php-ext-install \
         bcmath \
@@ -185,6 +189,8 @@ RUN set -x \
         calendar \
         exif \
         ffi \
+        imagick \
+        amqp \
         intl \
         gettext \
         ldap \

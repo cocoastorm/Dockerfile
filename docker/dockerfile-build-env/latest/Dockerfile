@@ -36,6 +36,7 @@ RUN apt-install \
     && git clone --depth 1 https://github.com/webdevops/Dockerfile.git /tmp/Dockerfile \
     && cd /tmp/Dockerfile \
     && make setup \
+    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
