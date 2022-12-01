@@ -20,6 +20,7 @@
 
 import os
 import re
+import sys
 from pathlib import Path
 
 DOCKERFILE_STATEMENT_FROM_RE = re.compile(r'FROM\s+(?P<platform>--platform=\S+\s)?(?P<image>[^\s:]+)(:(?P<tag>[^\s:]+))?(?!.*\s+AS)', re.MULTILINE)
@@ -205,9 +206,14 @@ def parse_dockerfile_from_statement(path):
     """
     with open(path, 'r') as fileInput:
         DockerfileContent = fileInput.read()
-        data = ([m.groupdict() for m in DOCKERFILE_STATEMENT_FROM_RE.finditer(DockerfileContent)])[0]
-        ret = create_imagename_from_regex_result(data)
-    return ret
+        
+        try:
+            data = ([m.groupdict() for m in DOCKERFILE_STATEMENT_FROM_RE.finditer(DockerfileContent)])[0]
+            ret = create_imagename_from_regex_result(data)
+            return ret
+        except IndexError as e:
+            print("failed to find docker from statement in %s" % path)
+            raise(e)
 
 def parse_dockerfile_multistage_images(path):
     """
