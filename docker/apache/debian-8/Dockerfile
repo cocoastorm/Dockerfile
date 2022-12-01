@@ -29,12 +29,10 @@ RUN set -x \
     && a2enmod actions proxy proxy_fcgi ssl rewrite headers expires \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 

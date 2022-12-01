@@ -27,7 +27,6 @@ RUN set -x \
         ' /etc/httpd/conf/httpd.conf /etc/httpd/conf.d/ssl.conf \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 

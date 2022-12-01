@@ -44,7 +44,6 @@ RUN set -x \
         ca-certificates \
         locales \
         gnupg \
-    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
@@ -78,7 +77,6 @@ RUN set -x \
         build-essential \
         libssl-dev \
         libffi-dev \
-    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
@@ -95,7 +93,6 @@ RUN set -x \
     && chmod +s /sbin/gosu \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
@@ -119,7 +116,6 @@ RUN set -x \
     && /usr/local/bin/generate-locales \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
@@ -159,7 +155,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && set -x \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer1 --version=1.10.16 \
     ## Enable ansible for deployment user
     && chmod 755 /usr/local/bin/ansible* \
-    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
@@ -170,7 +165,6 @@ RUN curl -sL https://deb.nodesource.com/setup_9.x | bash - \
     && npm install -g grunt-cli \
     && npm install -g bower \
     && npm install -g npm-cache \
-    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
@@ -188,7 +182,6 @@ RUN set -x \
     && chmod +x /usr/local/bin/dep \
     # Deployer: capistrano (http://capistranorb.com/)
     && gem install capistrano \
-    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
@@ -204,7 +197,6 @@ RUN rake assets:precompile \
     && /opt/docker/bin/bootstrap.sh \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 

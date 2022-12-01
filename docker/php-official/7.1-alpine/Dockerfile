@@ -66,7 +66,6 @@ RUN set -x \
     && chmod +s /sbin/gosu \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
@@ -87,7 +86,6 @@ RUN set -x \
         git \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
@@ -238,7 +236,6 @@ RUN set -x \
     && docker-service enable cron \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 

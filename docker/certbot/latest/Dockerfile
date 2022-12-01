@@ -24,6 +24,5 @@ RUN set -x \
     && pip install certbot \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup

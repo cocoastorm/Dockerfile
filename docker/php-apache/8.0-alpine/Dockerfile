@@ -33,7 +33,6 @@ RUN set -x \
         ' /etc/apache2/httpd.conf \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 

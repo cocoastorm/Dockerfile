@@ -17,7 +17,6 @@ RUN /usr/local/bin/apt-install \
         gstreamer1.0-plugins-good \
     && docker-arch-info $BUILDARCH $TARGETARCH \
 && docker-run-bootstrap \
-    
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 
