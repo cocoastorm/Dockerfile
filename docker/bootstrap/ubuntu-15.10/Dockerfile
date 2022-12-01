@@ -17,8 +17,8 @@ ENV TERM="xterm" \
 
 
 # Baselayout copy (from staged image)
-COPY --from=FROM ghcr.io/cocoastorm/webdevops/toolbox:buster /baselayout/sbin/* /sbin/
-COPY --from=FROM ghcr.io/cocoastorm/webdevops/toolbox:buster /baselayout/usr/local/bin/* /usr/local/bin/
+COPY --from=ghcr.io/cocoastorm/webdevops/toolbox:buster /baselayout/sbin/* /sbin/
+COPY --from=ghcr.io/cocoastorm/webdevops/toolbox:buster /baselayout/usr/local/bin/* /usr/local/bin/
 
 RUN set -x \
     # Init bootstrap
