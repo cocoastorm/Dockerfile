@@ -313,9 +313,7 @@
     && pecl install yaml \
     && pecl install redis \
     && pecl install mongodb \
-    {%- if version != '8.1' %}
     && pecl install xmlrpc-1.0.0RC3 \
-    {%- endif %}
     && docker-php-ext-enable \
         apcu \
         vips \
