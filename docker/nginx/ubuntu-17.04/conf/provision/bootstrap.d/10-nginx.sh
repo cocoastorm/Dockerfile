@@ -12,19 +12,13 @@ go-replace --mode=line --regex --regex-backrefs \
     -s '^([ \t]*error_log)[ \t]*([^\t ;]+)(.*;)$' -r '$1 /docker.stderr $3' \
     --  /etc/nginx/nginx.conf
 
-# newer nginx installations might have http.d as the directory
-if [ ! -d /etc/nginx/conf.d ]; then
-    mkdir -p /etc/nginx/conf.d
-fi
-
 # Enable nginx main config
 mkdir -p /etc/nginx/conf.d/
 ln -sf /opt/docker/etc/nginx/main.conf /etc/nginx/conf.d/10-docker.conf
 
 rm -f \
     /etc/nginx/sites-enabled/default \
-    /etc/nginx/conf.d/default.conf \
-    /etc/nginx/http.d/default.conf
+    /etc/nginx/conf.d/default.conf
 
 if [[ "$IMAGE_FAMILY" == "RedHat" ]] || [[ "$IMAGE_FAMILY" == "Alpine" ]]; then
     ln -sf /opt/docker/etc/nginx/nginx.conf /etc/nginx/nginx.conf

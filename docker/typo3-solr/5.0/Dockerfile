@@ -3,6 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
+
 FROM guywithnose/solr:4.10.4
 
 ARG BUILDARCH

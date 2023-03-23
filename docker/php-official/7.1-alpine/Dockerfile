@@ -3,6 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
+
 FROM php:7.1-fpm-alpine
 
 ARG BUILDARCH
@@ -169,7 +170,7 @@ RUN set -x \
         pdo_pgsql \
         pgsql \
         soap \
-        sockets \        
+        sockets \
         tokenizer \        
         sysvmsg \
         sysvsem \
@@ -191,7 +192,6 @@ RUN set -x \
     && pecl install mongodb \
     && pecl install imagick \
     && pecl install amqp \
-    
     && pecl install yaml \
     && docker-php-ext-enable \
         apcu \

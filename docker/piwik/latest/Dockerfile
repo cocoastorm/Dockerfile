@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM webdevops/php-nginx:7.1
+FROM webdevops/php-nginx:7.4
 
 ARG BUILDARCH
 ARG TARGETARCH

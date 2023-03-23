@@ -55,6 +55,9 @@ graph:
 graph-full:
 	python2 bin/console test:serverspec --threads=auto -v
 
+structure-test:
+	cd tests/structure-test && ./run.sh
+
 provision:
 	python2 bin/console generate:dockerfile
 	python2 bin/console generate:provision

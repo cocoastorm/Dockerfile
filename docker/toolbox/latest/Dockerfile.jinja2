@@ -1,0 +1,28 @@
+{{ docker.fromOfficial("alpine") }}
+
+RUN apk add --no-cache \
+        ca-certificates \
+        openssl \
+        curl \
+        bash \
+        sed \
+        wget \
+        zip \
+        unzip \
+        bzip2 \
+        p7zip \
+        drill \
+        ldns \
+        openssh-client \
+        rsync \
+        git \
+        gnupg \
+    && mkdir -p \
+            /baselayout/sbin \
+            /baselayout/usr/local/bin \
+        # Baselayout scripts
+        && wget -O /tmp/baselayout-install.sh https://raw.githubusercontent.com/webdevops/Docker-Image-Baselayout/master/install.sh \
+        && sh /tmp/baselayout-install.sh /baselayout \
+        {{ tools.goreplace(path="/baselayout/usr/local/bin") }} \
+        && ln -s /baselayout/usr/local/bin/go-replace /usr/local/bin/ \
+        {{ tools.gosu(path="/baselayout/sbin") }}

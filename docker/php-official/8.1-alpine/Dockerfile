@@ -3,6 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
+
 FROM php:8.1-fpm-alpine
 
 ARG BUILDARCH
@@ -151,9 +152,8 @@ RUN set -x \
     # Install extensions
     && PKG_CONFIG_PATH=/usr/local docker-php-ext-configure intl \
     && docker-php-ext-configure gd --with-jpeg --with-freetype --with-webp \
-    && git clone --branch 3.7.0 --depth 1 https://github.com/Imagick/imagick.git /usr/src/php/ext/imagick \
-    && pecl install xdebug \
-    && git clone --branch v1.11.0 --depth 1 https://github.com/php-amqp/php-amqp.git  /usr/src/php/ext/amqp \
+    && git clone --branch master --depth 1 https://github.com/Imagick/imagick.git /usr/src/php/ext/imagick \
+    && git clone --branch master --depth 1 https://github.com/php-amqp/php-amqp.git /usr/src/php/ext/amqp \
     && cd /usr/src/php/ext/amqp && git submodule update --init \
     && docker-php-ext-configure ldap \
     && PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
@@ -206,7 +206,6 @@ RUN set -x \
         xmlrpc \
         imagick \
         mongodb \
-        #amqp \
     # Uninstall dev and header packages
     && apk del -f --purge \
         autoconf \

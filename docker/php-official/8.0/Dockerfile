@@ -3,6 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
+
 FROM php:8.0-fpm-buster
 
 ARG BUILDARCH
@@ -152,7 +153,7 @@ RUN set -x \
     && docker-php-ext-install \
         bcmath \
         amqp \
-        imagick \        
+        imagick \
         bz2 \
         calendar \
         exif \

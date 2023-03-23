@@ -3,6 +3,10 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/php-ci
 FROM alpine:3.11
 
 ARG BUILDARCH

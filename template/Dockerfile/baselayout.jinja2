@@ -6,3 +6,4 @@
 COPY --from={{ docker.image("toolbox", flavor, user) }} /baselayout/sbin/* /sbin/
 COPY --from={{ docker.image("toolbox", flavor, user) }} /baselayout/usr/local/bin/* /usr/local/bin/
 {%- endmacro %}
+

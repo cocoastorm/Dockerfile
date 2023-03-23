@@ -3,6 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
+
 FROM php:5.6-fpm-stretch
 
 ARG BUILDARCH
@@ -147,7 +148,7 @@ RUN set -x \
     && docker-php-ext-configure ldap \
     && PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
     && docker-php-ext-install \
-        bcmath \        
+        bcmath \
         bz2 \
         calendar \
         exif \
