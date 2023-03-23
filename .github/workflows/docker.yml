@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - 'main'
-      - 'port-php8.1'
+      - 'port-php8.2'
 
 concurrency:
   group: "${{ github.ref }}"
