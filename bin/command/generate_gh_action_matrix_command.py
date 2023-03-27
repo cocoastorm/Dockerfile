@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import base64
 import json
 import os
 import sys
@@ -74,11 +75,7 @@ class GenerateGHActionMatrixCommand(BaseCommand):
         # matrix: base images
         base_images = [self.process_dockerfile(file) for file in matrix.get_base_images()]
         output_base_file = os.path.join(output_path, 'gh_matrix-base-images.json')
-
-        self.line("\n\n")
-        base_matrix = self.fmt_github_output("matrix-base", json.dumps(base_images))
-        print(base_matrix)
-        self.line("\n\n")
+        self.fmt_github_output("matrix-base", json.dumps(base_images))
 
         with open(output_base_file, 'w') as f:
             json.dump(base_images, f, indent=2)
@@ -86,11 +83,7 @@ class GenerateGHActionMatrixCommand(BaseCommand):
         # matrix: multiservice images
         multiservice_images = [self.process_dockerfile(file) for file in matrix.get_multiservice_images()]
         output_multiservice_file = os.path.join(output_path, 'gh_matrix-multiservice-images.json')
-
-        self.line("\n\n")
-        multi_matrix = self.fmt_github_output("matrix-multi", json.dumps(multiservice_images))
-        print(multi_matrix)
-        self.line("\n\n")
+        self.fmt_github_output("matrix-multi", json.dumps(multiservice_images))
 
         with open(output_multiservice_file, 'w') as fm:
             json.dump(multiservice_images, fm, indent=2)
@@ -98,23 +91,22 @@ class GenerateGHActionMatrixCommand(BaseCommand):
         # matrix: development images
         development_images = [self.process_dockerfile(file) for file in matrix.get_development_images()]
         output_development_file = os.path.join(output_path, 'gh_matrix-development-images.json')
-
-        self.line("\n\n")
-        dev_matrix = self.fmt_github_output("matrix-dev", json.dumps(development_images))
-        print(dev_matrix)
-        self.line("\n\n")
+        self.fmt_github_output("matrix-dev", json.dumps(development_images))
 
         with open(output_development_file, 'w') as fd:
             json.dump(development_images, fd, indent=2)
 
-    def fmt_github_output(self, name, output):
-        text = output
-        
-        text = text.replace("%", "%25")
-        text = text.replace("\n", "%0A")
-        text = text.replace("\r", "%0D")
-        
-        return "::set-output name=%s::%s" % (name, text)
+    def fmt_github_output(self, name, value):
+        eof = os.environ['EOF']
+
+        if eof is None:
+            urandom = os.urandom(15)
+            eof = base64.b64encode(urandom).decode('ascii')
+
+        with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+            print(f'{name}<<{eof}', file=fh)
+            print(value, file=fh)
+            print(eof, file=fh)
 
     def fmt_tags(self, image, tag):
         if self.image_user:
