@@ -63,7 +63,9 @@ jobs:
 
       - name: Generate Matrix
         id: generate-matrix
-        run: python bin/console generate:gh-action-matrix --whitelist='php*/8.*/*' --blacklist='php-official/*/**'
+        run: |
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          python bin/console generate:gh-action-matrix --whitelist='php*/8.2*/*' --blacklist='php-official/*/**'
   
   build-base-images:
     needs:
