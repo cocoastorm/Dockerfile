@@ -97,7 +97,7 @@ class GenerateGHActionMatrixCommand(BaseCommand):
             json.dump(development_images, fd, indent=2)
 
     def fmt_github_output(self, name, value):
-        eof = os.environ['EOF']
+        eof = os.getenv('EOF')
 
         if eof is None:
             urandom = os.urandom(15)
