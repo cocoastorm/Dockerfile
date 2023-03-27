@@ -3,7 +3,7 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-FROM webdevops/php:8.2-alpine
+FROM ghcr.io/cocoastorm/webdevops/php:8.2-alpine
 
 COPY conf/ /opt/docker/
 
