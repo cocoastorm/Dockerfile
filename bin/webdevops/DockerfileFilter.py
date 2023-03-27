@@ -3,12 +3,6 @@
 
 import json
 
-def should_be_ignored(name, ignore_list):
-    for ignore_term in ignore_list:
-        if ignore_term in name:
-            return True
-    return False
-
 class MatrixBuilder():
     cache = {}
 
@@ -28,6 +22,13 @@ class MatrixBuilder():
         self.image_prefix = my_image_prefix
         self.dockerfile_blocks = dockerfile_blocks
 
+    def should_ignore(self, name):
+        for term in self.ignore:
+            if term in name:
+                return True
+
+        return False
+
     def __add_to_cache(self, dockerfile_block):
         image_name = dockerfile_block['image']['fullname']
         self.cache[image_name] = dockerfile_block
@@ -36,7 +37,7 @@ class MatrixBuilder():
         dockerfile_image = dockerfile_block['image']
         image_from = dockerfile_image['from']
 
-        if self.image_prefix in image_from and should_be_ignored(image_from, self.ignore):
+        if self.image_prefix in image_from and self.should_ignore(image_from):
             self.base_images.append(dockerfile_block)
 
     def __add_to_dependency_graph(self, dockerfile_block):
@@ -49,7 +50,7 @@ class MatrixBuilder():
         if self.image_prefix not in image_from:
             return
 
-        if should_be_ignored(image_from, self.ignore):
+        if self.should_ignore(image_from):
             return
 
         image_deps = [dockerfile_image['from']]
@@ -60,7 +61,7 @@ class MatrixBuilder():
         self.__add_to_cache(dockerfile_block)
 
         for image_dep in image_deps:
-            if should_be_ignored(image_dep, self.ignore):
+            if self.should_ignore(image_dep):
                 continue
 
             graph_list = self.graph.get(image_dep)
