@@ -6,6 +6,9 @@
 
 FROM php:8.2-rc-fpm-buster
 
+ARG BUILDARCH
+ARG TARGETARCH
+
 LABEL maintainer=info@webdevops.io \
       vendor=WebDevOps.io \
       io.webdevops.layout=8 \

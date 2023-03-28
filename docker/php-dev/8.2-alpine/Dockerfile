@@ -5,6 +5,9 @@
 
 FROM ghcr.io/cocoastorm/webdevops/php:8.2-alpine
 
+ARG BUILDARCH
+ARG TARGETARCH
+
 COPY conf/ /opt/docker/
 
 RUN set -x \

@@ -1,5 +1,7 @@
 {{ docker.from("php", "8.1-alpine", user) }}
 
+{{ docker.platformArgs() }}
+
 {{ docker.copy('conf/', '/opt/docker/') }}
 
 RUN set -x \

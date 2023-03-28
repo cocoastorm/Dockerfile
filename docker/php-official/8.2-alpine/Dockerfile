@@ -6,6 +6,9 @@
 
 FROM php:8.2-rc-fpm-alpine
 
+ARG BUILDARCH
+ARG TARGETARCH
+
 LABEL maintainer=info@webdevops.io \
       vendor=WebDevOps.io \
       io.webdevops.layout=8 \
@@ -28,8 +31,8 @@ ENV COMPOSER_VERSION="2"
 
 
 # Baselayout copy (from staged image)
-COPY --from=ghcr.io/cocoastorm/webdevops/toolbox:buster /baselayout/sbin/* /sbin/
-COPY --from=ghcr.io/cocoastorm/webdevops/toolbox:buster /baselayout/usr/local/bin/* /usr/local/bin/
+COPY --from=ghcr.io/cocoastorm/webdevops/toolbox:alpine /baselayout/sbin/* /sbin/
+COPY --from=ghcr.io/cocoastorm/webdevops/toolbox:alpine /baselayout/usr/local/bin/* /usr/local/bin/
 
 COPY conf/ /opt/docker/
 

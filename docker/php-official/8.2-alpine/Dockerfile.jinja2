@@ -1,6 +1,8 @@
 
 {{ docker.fromOfficial("php", "8.2-rc-fpm-alpine") }}
 
+{{ docker.platformArgs() }}
+
 {{ docker.version() }}
 
 {{ environment.general() }}
@@ -10,7 +12,7 @@
 {{ environment.phpAlpineIconvWorkaround() }}
 {{ environment.phpComposerVersion() }}
 
-{{ baselayout.copy() }}
+{{ baselayout.copy('alpine') }}
 
 {{ docker.copy('conf/', '/opt/docker/') }}
 

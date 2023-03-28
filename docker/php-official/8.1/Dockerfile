@@ -3,15 +3,11 @@
 #    -- automatically generated  --
 #+++++++++++++++++++++++++++++++++++++++
 
-<<<<<<< HEAD
+
 FROM php:8.1-fpm-buster
 
 ARG BUILDARCH
 ARG TARGETARCH
-=======
-
-FROM php:8.1-fpm-buster
->>>>>>> upstream/php-ci
 
 LABEL maintainer=info@webdevops.io \
       vendor=WebDevOps.io \
