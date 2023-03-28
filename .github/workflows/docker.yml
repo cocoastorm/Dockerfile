@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   build-baselayout-image:
-    runs-on: [self-hosted, ubuntu-latest]
+    runs-on: [self-hosted, Linux]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -27,7 +27,7 @@ jobs:
 
   build-toolbox-image:
     needs: build-baselayout-image
-    runs-on: [self-hosted, ubuntu-latest]
+    runs-on: [self-hosted, Linux]
     strategy:
       matrix:
         flavor: ["alpine", "buster"]
@@ -45,7 +45,7 @@ jobs:
           image-tags: "ghcr.io/cocoastorm/webdevops/toolbox:${{ matrix.flavor }}"
 
   generate-matrix:
-    runs-on: [self-hosted, ubuntu-latest]
+    runs-on: [self-hosted, Linux]
     outputs:
       base: ${{ steps.generate-matrix.outputs.matrix-base }}
       multi: ${{ steps.generate-matrix.outputs.matrix-multi }}
@@ -71,7 +71,7 @@ jobs:
     needs:
       - generate-matrix
       - build-toolbox-image
-    runs-on: [self-hosted, ubuntu-latest]
+    runs-on: [self-hosted, Linux]
     strategy:
       max-parallel: 2
       matrix:
@@ -93,7 +93,7 @@ jobs:
     needs:
       - generate-matrix
       - build-base-images
-    runs-on: [self-hosted, ubuntu-latest]
+    runs-on: [self-hosted, Linux]
     strategy:
       max-parallel: 2
       matrix:
@@ -115,7 +115,7 @@ jobs:
     needs:
       - generate-matrix
       - build-multi-images
-    runs-on: [self-hosted, ubuntu-latest]
+    runs-on: [self-hosted, Linux]
     strategy:
       max-parallel: 2
       matrix:
