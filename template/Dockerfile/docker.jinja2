@@ -55,7 +55,7 @@ ENTRYPOINT ["{{ command }}"]
 CMD ["{{ command }}"]
 {%- endmacro -%}
 
-{%- macro cleanup() %}
+{%- macro cleanup() -%}
     && docker-arch-info $TARGETARCH \
     && docker-image-cleanup
 {%- endmacro -%}

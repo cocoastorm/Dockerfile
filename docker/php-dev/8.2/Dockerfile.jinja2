@@ -1,0 +1,10 @@
+{{ docker.from("php", "8.2", user) }}
+
+{{ docker.platformArgs() }}
+
+{{ docker.copy('conf/', '/opt/docker/') }}
+
+RUN set -x \
+    {{ php.officialDevelopment(version="8.2") }} \
+    {{ provision.runBootstrap() }} \
+    {{ docker.cleanup() }}

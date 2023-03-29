@@ -28,3 +28,8 @@ RUN set -eux; \
         git \
         gnupg \
     ; \
+    mkdir -p \
+        /baselayout/sbin \
+        /baselayout/usr/local/bin \
+        {{ tools.goreplace(path="/baselayout/usr/local/bin") }} \
+        {{ tools.gosu(path="/baselayout/sbin") }}

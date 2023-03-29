@@ -1,4 +1,3 @@
-{{ baselayout.dockerStage() }}
 
 {{ docker.fromOfficial("php", "7.4-fpm-alpine") }}
 
@@ -13,7 +12,7 @@
 {{ environment.phpAlpineIconvWorkaround() }}
 {{ environment.phpComposerVersion() }}
 
-{{ baselayout.copy() }}
+{{ baselayout.copy("alpine") }}
 
 {{ docker.copy('conf/', '/opt/docker/') }}
 

@@ -4,15 +4,14 @@ on:
   push:
     branches:
       - 'main'
-      - 'experimental/gh-actions'
-      - 'experimental/some-dependency-tracking'
+      - 'port-php8.2'
 
 concurrency:
   group: "${{ github.ref }}"
 
 jobs:
   build-baselayout-image:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -28,7 +27,7 @@ jobs:
 
   build-toolbox-image:
     needs: build-baselayout-image
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux]
     strategy:
       matrix:
         flavor: ["alpine", "buster"]
@@ -46,7 +45,8 @@ jobs:
           image-tags: "ghcr.io/cocoastorm/webdevops/toolbox:${{ matrix.flavor }}"
 
   generate-matrix:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux]
+    container: python:3.9
     outputs:
       base: ${{ steps.generate-matrix.outputs.matrix-base }}
       multi: ${{ steps.generate-matrix.outputs.matrix-multi }}
@@ -55,22 +55,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
-          cache: 'pip'
-
       - run: pip install -r bin/requirements.txt
 
       - name: Generate Matrix
         id: generate-matrix
-        run: python bin/console generate:gh-action-matrix --whitelist='php*/8.*/*' --blacklist='php-official/*/**'
+        run: |
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          python bin/console generate:gh-action-matrix --whitelist='php*/8.2*/*' --blacklist='php-official/*/**'
   
   build-base-images:
     needs:
       - generate-matrix
       - build-toolbox-image
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux]
     strategy:
       max-parallel: 2
       matrix:
@@ -92,7 +89,7 @@ jobs:
     needs:
       - generate-matrix
       - build-base-images
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux]
     strategy:
       max-parallel: 2
       matrix:
@@ -114,7 +111,7 @@ jobs:
     needs:
       - generate-matrix
       - build-multi-images
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux]
     strategy:
       max-parallel: 2
       matrix:

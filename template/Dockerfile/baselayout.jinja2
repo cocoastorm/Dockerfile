@@ -1,21 +1,9 @@
 {% import 'Dockerfile/docker.jinja2' as docker %}
 {% import 'Dockerfile/tools.jinja2' as tools %}
 
-{% macro dockerStage() %}
-# staged baselayout builder
-{{ docker.from("toolbox", "alpine", user) }} AS base
-
-{{ docker.platformArgs() }}
-
-RUN set -eux \
-    mkdir -p \
-        /baselayout/sbin \
-        /baselayout/usr/local/bin \
-    {{ tools.goreplace(path="/baselayout/usr/local/bin") }} \
-    {{ tools.gosu(path="/baselayout/sbin") }}
+{% macro copy(flavor="buster") %}
+# Baselayout copy (from staged image)
+COPY --from={{ docker.image("toolbox", flavor, user) }} /baselayout/sbin/* /sbin/
+COPY --from={{ docker.image("toolbox", flavor, user) }} /baselayout/usr/local/bin/* /usr/local/bin/
 {%- endmacro %}
 
-{% macro copy() %}
-# base copy (from staged image)
-COPY --from=base /baselayout /
-{%- endmacro %}

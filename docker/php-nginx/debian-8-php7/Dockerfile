@@ -20,9 +20,10 @@ COPY conf/ /opt/docker/
 
 RUN set -x \
     # Install nginx
-    && printf "deb http://nginx.org/packages/debian/ $(docker-image-info dist-codename)  nginx\n deb-src http://nginx.org/packages/debian/ $(docker-image-info dist-codename) nginx" \
+    && printf "deb http://nginx.org/packages/debian/ jessie  nginx\n deb-src http://nginx.org/packages/debian/ jessie nginx" \
     >> /etc/apt/sources.list \
     && curl -L https://nginx.org/keys/nginx_signing.key | apt-key add - \
+    && apt-get update \
     && apt-install \
     nginx \
     && docker-arch-info $BUILDARCH $TARGETARCH \

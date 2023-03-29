@@ -4,31 +4,6 @@
 #+++++++++++++++++++++++++++++++++++++++
 
 
-# staged baselayout builder
-FROM ghcr.io/cocoastorm/webdevops/toolbox:alpine AS base
-
-ARG BUILDARCH
-ARG TARGETARCH
-
-RUN set -eux \
-    mkdir -p \
-        /baselayout/sbin \
-        /baselayout/usr/local/bin \
-    ## install go-replace
-    && export dpkgArch=$(dpkg --print-architecture | awk -F- '{ print $NF }') \
-    && export grArch="$(echo $dpkgArch | sed s/amd64/64/g)" \
-    && wget -O "/baselayout/usr/local/bin/go-replace-$dpkgArch" "https://github.com/webdevops/goreplace/releases/download/1.1.2/gr-$grArch-linux" \
-    && chmod +x "/baselayout/usr/local/bin/go-replace-$dpkgArch" \
-    ## install gosu
-    && export dpkgArch=$(dpkg --print-architecture | awk -F- '{ print $NF }'); \
-        wget -O "/baselayout/sbin/gosu" "https://github.com/tianon/gosu/releases/download/1.10/gosu-$dpkgArch"; \
-        wget -O "/baselayout/sbin/gosu.asc" "https://github.com/tianon/gosu/releases/download/1.10/gosu-$dpkgArch.asc"; \
-    GNUPGHOME="$(mktemp -d)"; \
-        gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
-        gpg --batch --verify /baselayout/sbin/gosu.asc "/baselayout/sbin/gosu"; \
-        rm -rf "$GNUPGHOME"; \
-        chmod +x "/baselayout/sbin/gosu";
-
 FROM php:8.0-fpm-buster
 
 ARG BUILDARCH
@@ -54,8 +29,9 @@ ENV PHP_SENDMAIL_PATH="/usr/sbin/sendmail -t -i"
 ENV COMPOSER_VERSION="2"
 
 
-# base copy (from staged image)
-COPY --from=base /baselayout /
+# Baselayout copy (from staged image)
+COPY --from=ghcr.io/cocoastorm/webdevops/toolbox:buster /baselayout/sbin/* /sbin/
+COPY --from=ghcr.io/cocoastorm/webdevops/toolbox:buster /baselayout/usr/local/bin/* /usr/local/bin/
 
 COPY conf/ /opt/docker/
 
@@ -172,11 +148,12 @@ RUN set -x \
     && git clone --branch master --depth 1 https://github.com/php-amqp/php-amqp.git /usr/src/php/ext/amqp \
     && cd /usr/src/php/ext/amqp && git submodule update --init \
     && git clone --branch master --depth 1 https://github.com/Imagick/imagick.git /usr/src/php/ext/imagick \
+    && docker-php-ext-configure ldap \
     && PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
     && docker-php-ext-install \
         bcmath \
         amqp \
-        imagick \        
+        imagick \
         bz2 \
         calendar \
         exif \
@@ -190,7 +167,7 @@ RUN set -x \
         pdo_pgsql \
         pgsql \
         soap \
-        sockets \
+        sockets \  
         tokenizer \
         sysvmsg \
         sysvsem \
@@ -203,9 +180,16 @@ RUN set -x \
         opcache \
     && pecl install memcached \
     && pecl install apcu \
+    && pecl install xmlrpc-1.0.0RC3 \
     && pecl install vips \
     && pecl install redis \
     && pecl install mongodb \
+    && echo extension=apcu.so > /usr/local/etc/php/conf.d/apcu.ini \
+    && echo extension=redis.so > /usr/local/etc/php/conf.d/redis.ini \
+    && echo extension=mongodb.so > /usr/local/etc/php/conf.d/mongodb.ini \
+    && echo extension=memcached.so > /usr/local/etc/php/conf.d/memcached.ini \
+    && echo extension=vips.so > /usr/local/etc/php/conf.d/vips.ini \
+    && echo extension=xmlrpc.so > /usr/local/etc/php/conf.d/xmlrpc.ini \
     # Uninstall dev and header packages
     && apt-get purge -y -f --force-yes \
         libc-client-dev \
