@@ -4,6 +4,7 @@
 /tests/serverspec/vendor
 /tests/serverspec/.bundle/
 /tests/serverspec/Dockerfile*
+gh_matrix*.json
 /BLACKLIST
 /venv
 *.log
