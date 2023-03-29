@@ -3,8 +3,7 @@ name: docker images
 on:
   push:
     branches:
-      - 'main'
-      - 'port-php8.2'
+      - main
 
 concurrency:
   group: "${{ github.ref }}"
