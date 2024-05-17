@@ -1,0 +1,15 @@
+{{ docker.from("php", "8.3", user) }}
+
+{{ docker.platformArgs() }}
+
+{{ environment.web() }}
+{{ environment.webPhp() }}
+
+{{ docker.copy('conf/', '/opt/docker/') }}
+
+RUN set -x \
+    {{ apache.debian12() }} \
+    {{ provision.runBootstrap() }} \
+    {{ docker.cleanup() }}
+
+{{ docker.expose('80 443') }}

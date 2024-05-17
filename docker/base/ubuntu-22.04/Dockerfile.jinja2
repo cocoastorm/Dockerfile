@@ -1,0 +1,15 @@
+{{ docker.from("bootstrap", "ubuntu-22.04", user) }}
+
+{{ docker.platformArgs() }}
+
+{{ environment.base() }}
+
+{{ docker.copy('conf/', '/opt/docker/') }}
+
+RUN set -x \
+    {{ base.ubuntu() }} \
+    {{ provision.runBootstrap() }} \
+    {{ docker.cleanup() }}
+
+{{ docker.entrypoint("/entrypoint") }}
+{{ docker.cmd("supervisord") }}

@@ -1,0 +1,12 @@
+{{ docker.from("base", "ubuntu-22.04", user) }}
+
+{{ docker.platformArgs() }}
+
+{{ environment.baseApp() }}
+
+{{ docker.copy('conf/', '/opt/docker/') }}
+
+RUN set -x \
+    {{ baseapp.ubuntu() }} \
+    {{ provision.runBootstrap() }} \
+    {{ docker.cleanup() }}

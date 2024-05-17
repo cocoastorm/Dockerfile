@@ -1,8 +1,0 @@
-{{ docker.from("bootstrap", "centos-7", user) }}
-
-{{ docker.platformArgs() }}
-
-RUN set -x \
-    {{ ansible.centos() }} \
-    {{ provision.runBootstrap() }} \
-    {{ docker.cleanup() }}

@@ -1,9 +1,0 @@
-{{ docker.from("nginx", "debian-9", user) }}
-
-{{ docker.platformArgs() }}
-
-{{ environment.webDevelopment() }}
-
-{{ docker.copy('conf/', '/opt/docker/') }}
-
-{{ docker.expose('80 443') }}

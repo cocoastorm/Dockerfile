@@ -40,7 +40,7 @@ RUN set -x \
     && apt-update \
     && /usr/local/bin/generate-dockerimage-info \
     # Enable non-free
-    && sed -ri "s/(deb.*\/debian $(docker-image-info dist-codename) main)/\1 contrib non-free /" -- /etc/apt/sources.list \
+    && sed -ri "s/(deb.*\/debian $(docker-image-info dist-codename) main)/\1 contrib non-free /" -- /etc/apt/sources.list \    
     && apt-update \
     # System update
     && /usr/local/bin/apt-upgrade \
@@ -102,10 +102,11 @@ RUN set -x \
         pngquant \
         # Libraries
         libvips42 \
-        librabbitmq4 \
+        librabbitmq4 \        
         libldap-2.4-2 \
-        libxslt1.1 \
         zlibc \
+        libxslt1.1 \
+        libldap-common \
         zlib1g \
         libpq5 \
         libpng16-16 \
@@ -133,6 +134,7 @@ RUN set -x \
         libvips-dev \
         librabbitmq-dev \
         libmagick++-dev \
+        libgmp-dev \
     # Install guetzli
     && wget https://github.com/google/guetzli/archive/master.zip \
     && unzip master.zip \
@@ -140,12 +142,12 @@ RUN set -x \
     && cp guetzli-master/bin/Release/guetzli /usr/local/bin/ \
     && rm -rf master.zip guetzli-master \
     # Install new version of ICU
-    && curl -sS -o /tmp/icu.tar.gz -L https://github.com/unicode-org/icu/releases/download/release-66-1/icu4c-66_1-src.tgz \
+    && curl -sS -o /tmp/icu.tar.gz -L https://github.com/unicode-org/icu/releases/download/release-73-1/icu4c-73_1-src.tgz \
     && tar -zxf /tmp/icu.tar.gz -C /tmp && cd /tmp/icu/source && ./configure --prefix=/usr/local && make && make install && cd / && rm -rf /tmp/icu* \
     # Install extensions
     && PKG_CONFIG_PATH=/usr/local docker-php-ext-configure intl \
     && docker-php-ext-configure gd --with-jpeg --with-freetype --with-webp \
-    && git clone --branch master --depth 1 https://github.com/php-amqp/php-amqp.git /usr/src/php/ext/amqp \
+    && git clone --branch latest --depth 1 https://github.com/php-amqp/php-amqp.git /usr/src/php/ext/amqp \
     && cd /usr/src/php/ext/amqp && git submodule update --init \
     && git clone --branch master --depth 1 https://github.com/Imagick/imagick.git /usr/src/php/ext/imagick \
     && docker-php-ext-configure ldap \
@@ -157,6 +159,8 @@ RUN set -x \
         bz2 \
         calendar \
         exif \
+        ftp \
+        gmp \
         intl \
         gettext \
         ldap \
@@ -167,7 +171,7 @@ RUN set -x \
         pdo_pgsql \
         pgsql \
         soap \
-        sockets \  
+        sockets \
         tokenizer \
         sysvmsg \
         sysvsem \
@@ -209,6 +213,7 @@ RUN set -x \
         libvips-dev \
         librabbitmq-dev \
         libmagick++-dev \
+        libgmp-dev \
     && rm -f /usr/local/etc/php-fpm.d/zz-docker.conf \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer2 \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer1 --1 \

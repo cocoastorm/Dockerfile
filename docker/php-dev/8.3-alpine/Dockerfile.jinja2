@@ -1,0 +1,12 @@
+{{ docker.from("php", "8.3-alpine", user) }}
+
+{{ docker.platformArgs() }}
+
+{{ environment.baseApp() }}
+
+{{ docker.copy('conf/', '/opt/docker/') }}
+
+RUN set -x \
+    {{ php.officialDevelopmentAlpine(version="8.3") }} \
+    {{ provision.runBootstrap() }} \
+    {{ docker.cleanup() }}

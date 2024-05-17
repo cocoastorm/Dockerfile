@@ -21,9 +21,6 @@ class JobBuilder
                 'docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY',
             ],
             'image' => 'webdevops/dockerfile-build-env',
-            'variables' => [
-                'DOCKER_BUILDKIT' => '1',
-            ],
             'script' => [],
 //            'retry' => 2,
             'tags' => ['aws'],
@@ -80,13 +77,6 @@ class JobBuilder
             'echo "FROM ' . $node['id'] . '" >> ' . $testDockerfile,
             'echo "COPY conf/ /" >> ' . $testDockerfile,
         ];
-        if ($node['serverspec']['DOCKER_IS_TOOLIMAGE']) {
-            $script[] = 'echo "RUN chmod +x /loop-entrypoint.sh" >> ' . $testDockerfile;
-            $script[] = 'echo "ENTRYPOINT /loop-entrypoint.sh" >> ' . $testDockerfile;
-        }
-        if ($node['image'] === 'varnish') {
-            $script[] = 'echo "ENV VARNISH_BACKEND_HOST webdevops.io" >> ' . $testDockerfile;
-        }
         $script[] = 'bundle install';
         $script[] = 'bash serverspec.sh ' . $specFile . ' ' . $node['id'] .' ' . $encodedJsonConfig  . '  ' . $testDockerfile;
         return $script;

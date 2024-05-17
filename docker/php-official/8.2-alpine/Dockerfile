@@ -4,7 +4,7 @@
 #+++++++++++++++++++++++++++++++++++++++
 
 
-FROM php:8.2-rc-fpm-alpine
+FROM php:8.2-fpm-alpine
 
 ARG BUILDARCH
 ARG TARGETARCH
@@ -39,7 +39,7 @@ COPY conf/ /opt/docker/
 RUN set -x \
     # Init bootstrap
     # Add community
-    && echo https://dl-4.alpinelinux.org/alpine/v3.12/community/ >> /etc/apk/repositories \
+    && echo https://dl-4.alpinelinux.org/alpine/v3.18/community/ >> /etc/apk/repositories \
     # System update
     && /usr/local/bin/apk-upgrade \
     # Install base stuff
@@ -109,10 +109,12 @@ RUN set -x \
         libintl \
         libpq \
         libxslt \
+        libgomp \
         libzip \
         libmemcached \
         yaml \
         # Build dependencies
+        linux-headers \
         autoconf \
         g++ \
         make \
@@ -120,6 +122,7 @@ RUN set -x \
         pcre-dev \
         gettext-dev \
         freetype-dev \
+        gmp-dev \
         libjpeg-turbo-dev \
         libpng-dev \
         vips-dev \
@@ -147,13 +150,13 @@ RUN set -x \
     # https://github.com/docker-library/php/issues/240
     && apk add gnu-libiconv --update-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing/ --allow-untrusted \
     # Install new version of ICU
-    && curl -sS -o /tmp/icu.tar.gz -L https://github.com/unicode-org/icu/releases/download/release-66-1/icu4c-66_1-src.tgz \
+    && curl -sS -o /tmp/icu.tar.gz -L https://github.com/unicode-org/icu/releases/download/release-73-1/icu4c-73_1-src.tgz \
     && tar -zxf /tmp/icu.tar.gz -C /tmp && cd /tmp/icu/source && ./configure --prefix=/usr/local && make && make install && cd / && rm -rf /tmp/icu* \
     # Install extensions
     && PKG_CONFIG_PATH=/usr/local docker-php-ext-configure intl \
     && docker-php-ext-configure gd --with-jpeg --with-freetype --with-webp \
     && git clone --branch master --depth 1 https://github.com/Imagick/imagick.git /usr/src/php/ext/imagick \
-    && git clone --branch master --depth 1 https://github.com/php-amqp/php-amqp.git /usr/src/php/ext/amqp \
+    && git clone --branch latest --depth 1 https://github.com/php-amqp/php-amqp.git /usr/src/php/ext/amqp \
     && cd /usr/src/php/ext/amqp && git submodule update --init \
     && docker-php-ext-configure ldap \
     && PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
@@ -162,6 +165,8 @@ RUN set -x \
         bz2 \
         calendar \
         exif \
+        ftp \
+        gmp \
         ffi \
         imagick \
         amqp \
@@ -175,7 +180,7 @@ RUN set -x \
         pdo_pgsql \
         pgsql \
         soap \
-        sockets \        
+        sockets \
         sysvmsg \
         sysvsem \
         sysvshm \
@@ -209,12 +214,14 @@ RUN set -x \
     # Uninstall dev and header packages
     && apk del -f --purge \
         autoconf \
+        linux-headers \
         g++ \
         make \
         libtool \
         pcre-dev \
         gettext-dev \
         freetype-dev \
+        gmp-dev \
         libjpeg-turbo-dev \
         libpng-dev \
         vips-dev \

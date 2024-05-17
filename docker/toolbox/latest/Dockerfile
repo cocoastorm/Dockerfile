@@ -28,11 +28,10 @@ RUN apk add --no-cache \
         # Baselayout scripts
         && wget -O /tmp/baselayout-install.sh https://raw.githubusercontent.com/webdevops/Docker-Image-Baselayout/master/install.sh \
         && sh /tmp/baselayout-install.sh /baselayout \
-        ## install go-replace
+        ## Install go-replace
     && export dpkgArch=$(dpkg --print-architecture | awk -F- '{ print $NF }') \
-    && export grArch="$(echo $dpkgArch | sed s/amd64/64/g)" \
-    && wget -O "/baselayout/usr/local/bin/go-replace-$dpkgArch" "https://github.com/webdevops/goreplace/releases/download/1.1.2/gr-$grArch-linux" \
-    && chmod +x "/baselayout/usr/local/bin/go-replace-$dpkgArch" \
+    && wget -O "/baselayout/usr/local/bin/go-replace" "https://github.com/webdevops/go-replace/releases/download/22.10.0/go-replace.linux.$dpkgArch" \
+    && chmod +x "/baselayout/usr/local/bin/go-replace" \
         && ln -s /baselayout/usr/local/bin/go-replace /usr/local/bin/ \
         ## install gosu
     && export dpkgArch=$(dpkg --print-architecture | awk -F- '{ print $NF }'); \

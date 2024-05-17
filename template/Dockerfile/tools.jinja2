@@ -1,9 +1,8 @@
-{% macro goreplace(path="/usr/local/bin", version="1.1.2") -%}
-    ## install go-replace
+{% macro goreplace(path="/usr/local/bin", version="22.10.0") -%}
+    ## Install go-replace
     && export dpkgArch=$(dpkg --print-architecture | awk -F- '{ print $NF }') \
-    && export grArch="$(echo $dpkgArch | sed s/amd64/64/g)" \
-    && wget -O "{{ path }}/go-replace-$dpkgArch" "https://github.com/webdevops/goreplace/releases/download/{{ version }}/gr-$grArch-linux" \
-    && chmod +x "{{ path }}/go-replace-$dpkgArch"
+    && wget -O "{{ path }}/go-replace" "https://github.com/webdevops/go-replace/releases/download/{{ version }}/go-replace.linux.$dpkgArch" \
+    && chmod +x "{{ path }}/go-replace"
 {%- endmacro %}
 
 {% macro gosu(path="/sbin", version="1.10") -%}
