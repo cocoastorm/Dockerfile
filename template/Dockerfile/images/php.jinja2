@@ -286,6 +286,10 @@
 {%- if version != '8.4' %}
     && PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
 {%- endif %}
+{%- if version == '8.4' %}
+    # https://github.com/Imagick/imagick/pull/690#issuecomment-2566064269
+    && docker-php-ext-configure imagick CPPFLAGS='-Dphp_strtolower=zend_str_tolower' \ {# workaround for PHP 8.4 and imagick ext #}
+{%- endif %}
     && docker-php-ext-install \
         bcmath \
         bz2 \
