@@ -302,7 +302,9 @@
         gettext \
         ldap \
         mysqli \
+{%- if version != '8.4' %}
         imap \
+{%- endif %}
 {%- if version != '7.4' and version != '8.0' and version != '8.1' and version != '8.2' and version != '8.3' and version != '8.4' %}
         hash \
 {%- endif %}
