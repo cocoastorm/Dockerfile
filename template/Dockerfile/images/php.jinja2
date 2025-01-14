@@ -77,8 +77,8 @@
     && cd /usr/src/php/ext/amqp && git submodule update --init \
     && git clone --branch master --depth 1 https://github.com/Imagick/imagick.git /usr/src/php/ext/imagick \
 {%- endif %}
-{%- if version != '8.4' %}
     && docker-php-ext-configure ldap \
+{%- if version != '8.4' %}
     && PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
 {%- endif %}
     && docker-php-ext-install \
@@ -282,8 +282,8 @@
     && docker-php-ext-configure intl --with-icu-dir=/usr/local \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-webp-dir=/usr/include/ \
 {%- endif %}
-{%- if version != '8.4' %}
     && docker-php-ext-configure ldap \
+{%- if version != '8.4' %}
     && PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
 {%- endif %}
     && docker-php-ext-install \
