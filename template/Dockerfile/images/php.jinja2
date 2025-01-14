@@ -77,8 +77,10 @@
     && cd /usr/src/php/ext/amqp && git submodule update --init \
     && git clone --branch master --depth 1 https://github.com/Imagick/imagick.git /usr/src/php/ext/imagick \
 {%- endif %}
+{%- if version != '8.4' %}
     && docker-php-ext-configure ldap \
     && PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
+{%- endif %}
     && docker-php-ext-install \
         bcmath \
 {%- if version == '8.0' or version == '8.1' or version == '8.2' or version == '8.3' or version == '8.4' %}
@@ -98,7 +100,9 @@
 {%- if version|int == 5 or version == '7.0' or version == '7.1' %}
         mcrypt \
 {%- endif %}
+{%- if version != '8.4' %}
         imap \
+{%- endif %}
 {%- if version != '7.4' and version != '8.0' and version != '8.1' and version != '8.2' and version != '8.3' and version != '8.4' %}
         hash \
 {%- endif %}
@@ -145,6 +149,9 @@
     && pecl install vips \
     && pecl install redis \
     && pecl install mongodb \
+    {%- if version == '8.4' %}
+    && pecl install imap \
+    {%- endif %}
     && echo extension=apcu.so > /usr/local/etc/php/conf.d/apcu.ini \
     && echo extension=excimer.so > /usr/local/etc/php/conf.d/excimer.ini \
     && echo extension=opentelemetry.so > /usr/local/etc/php/conf.d/opentelemetry.ini \
@@ -154,6 +161,9 @@
     && echo extension=memcached.so > /usr/local/etc/php/conf.d/memcached.ini \
     && echo extension=vips.so > /usr/local/etc/php/conf.d/vips.ini \
     && echo extension=xmlrpc.so > /usr/local/etc/php/conf.d/xmlrpc.ini \
+    {%- if version == '8.4' %}
+    && echo extension=imap.so > /usr/local/etc/php/conf.d/imap.ini \
+    {%- endif %}
 {%- else %}
     # Install extensions for PHP 7.x
     && pecl install apcu \
@@ -272,8 +282,10 @@
     && docker-php-ext-configure intl --with-icu-dir=/usr/local \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-webp-dir=/usr/include/ \
 {%- endif %}
+{%- if version != '8.4' %}
     && docker-php-ext-configure ldap \
     && PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
+{%- endif %}
     && docker-php-ext-install \
         bcmath \
         bz2 \
@@ -336,6 +348,9 @@
     && pecl install yaml \
     && pecl install redis \
     && pecl install mongodb \
+{%- if version == '8.4' %}
+    && pecl install imap \
+{%- endif %}
     && pecl install xmlrpc-1.0.0RC3 \
     && docker-php-ext-enable \
         apcu \
@@ -348,6 +363,9 @@
         xmlrpc \
         imagick \
         mongodb \
+{%- if version == '8.4' %}
+        imap \
+{%- endif %}
 {%- else %}
     # Install vips (only works with PHP >= 7.0)
     && pecl install apcu \
